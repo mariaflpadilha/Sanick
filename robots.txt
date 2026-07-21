@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.sanick.com.br/sitemap.xml
+Sitemap: https://sanick.netlify.app/sitemap.xml

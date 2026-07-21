@@ -3,7 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sanick — Conte com a Sanick</title>
+<title>Sanick — Sensores inteligentes de contagem industrial | 99,9% de precisão</title>
+<meta name="description" content="Sensores de contagem com IA e calibração adaptativa: 99,9% de precisão e 20x menor custo. 20 anos de P&D em Chapecó/SC, com clientes em 3 continentes.">
+<link rel="canonical" href="https://sanick.netlify.app/">
+<meta name="theme-color" content="#1E3A2E">
+<meta name="author" content="Sanick Equipamentos de Precisão">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sanick Equipamentos de Precisão">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://sanick.netlify.app/">
+<meta property="og:title" content="Sanick — Contagem industrial com 99,9% de precisão">
+<meta property="og:description" content="Sensores de contagem com IA e calibração adaptativa: 99,9% de precisão e 20x menor custo. 20 anos de P&D em Chapecó/SC, com clientes em 3 continentes.">
+<meta property="og:image" content="https://sanick.netlify.app/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sensores Sanick Intelicount instalados em linha de produção industrial">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sanick — Contagem industrial com 99,9% de precisão">
+<meta name="twitter:description" content="Sensores de contagem com IA e calibração adaptativa: 99,9% de precisão e 20x menor custo. 20 anos de P&D em Chapecó/SC, com clientes em 3 continentes.">
+<meta name="twitter:image" content="https://sanick.netlify.app/assets/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -27,11 +47,17 @@
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
 
-  .ticker{ background:var(--green-darker); overflow:hidden; white-space:nowrap; padding:9px 0; }
-  .ticker-track{ display:inline-flex; width:max-content; animation:tickerScroll 26s linear infinite; }
-  .ticker-track span{ font-size:11.5px; font-weight:600; letter-spacing:.08em; color:rgba(255,255,255,0.82); text-transform:uppercase; padding:0 16px; }
-  .ticker-track .dot{ color:var(--green-accent-text); padding:0; }
-  @keyframes tickerScroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  .ticker{ background:var(--green-darker); overflow:hidden; padding:9px 0; position:relative; }
+  .ticker::before, .ticker::after{ content:""; position:absolute; top:0; bottom:0; width:64px; z-index:2; pointer-events:none; }
+  .ticker::before{ left:0; background:linear-gradient(90deg, var(--green-darker), transparent); }
+  .ticker::after{ right:0; background:linear-gradient(270deg, var(--green-darker), transparent); }
+  .ticker-track{ display:flex; width:max-content; animation:tickerScroll 40s linear infinite; }
+  .ticker-group{ display:flex; align-items:center; flex-shrink:0; }
+  .ticker-group span{ font-size:11.5px; font-weight:600; letter-spacing:.08em; color:rgba(255,255,255,0.82); text-transform:uppercase; padding:0 16px; white-space:nowrap; }
+  .ticker-group .dot{ color:var(--green-accent-text); padding:0; }
+  .ticker:hover .ticker-track{ animation-play-state:paused; }
+  @keyframes tickerScroll{ from{transform:translateX(0);} to{transform:translateX(-25%);} }
+  @media (prefers-reduced-motion: reduce){ .ticker-track{ animation:none; } }
 
   @keyframes fadeInUp{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
   .fade-in-up{ opacity:0; animation:fadeInUp .8s ease forwards; }
@@ -53,6 +79,7 @@
   }
   .mono{font-family:'JetBrains Mono', monospace;}
   a{color:inherit; text-decoration:none;}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
   img{display:block; max-width:100%;}
   button{font-family:inherit;}
   .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
@@ -225,17 +252,45 @@
   .final-cta h2{color:var(--white); font-size:32px; max-width:600px; margin:0 auto 16px;}
   .final-cta p.sub{color:rgba(255,255,255,0.65); max-width:520px; margin:0 auto 44px; font-size:16px;}
 
-  .quiz-card{
-    max-width:620px; margin:0 auto; background:var(--white); border-radius:16px; padding:40px 44px 36px;
-    text-align:left; color:var(--ink); box-shadow:0 20px 60px rgba(0,0,0,0.25);
+  /* ===== Diagnóstico / Quiz (captação de lead) ===== */
+  .quiz-section{ background:var(--green-darker); position:relative; overflow:hidden; }
+  .quiz-section::before{
+    content:""; position:absolute; inset:0; opacity:.5;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(143,205,168,0.12), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(172,39,21,0.18), transparent 45%);
   }
-  .quiz-progress{ display:flex; gap:6px; margin-bottom:28px; }
-  .quiz-progress .seg{ height:4px; flex:1; background:var(--border); border-radius:2px; overflow:hidden; }
-  .quiz-progress .seg i{ display:block; height:100%; width:0%; background:var(--terracotta); transition:width .25s; }
+  .quiz-layout{ position:relative; z-index:1; display:grid; grid-template-columns:0.85fr 1fr; gap:64px; align-items:center; }
+  .quiz-intro .section-eyebrow{ color:var(--green-accent-text); }
+  .quiz-intro h2{ color:var(--white); font-size:34px; line-height:1.18; margin-bottom:18px; }
+  .quiz-intro > p{ color:rgba(255,255,255,0.72); font-size:16px; margin-bottom:28px; max-width:420px; }
+  .quiz-benefits{ list-style:none; margin-bottom:28px; }
+  .quiz-benefits li{ display:flex; align-items:flex-start; gap:12px; color:rgba(255,255,255,0.88); font-size:14.5px; padding:9px 0; }
+  .quiz-benefits li svg{ width:18px; height:18px; flex-shrink:0; margin-top:2px; fill:var(--green-accent-text); }
+  .quiz-alt{ font-size:13.5px; color:rgba(255,255,255,0.55); border-top:1px solid rgba(255,255,255,0.12); padding-top:20px; }
+  .quiz-alt a{ color:var(--green-accent-text); font-weight:600; text-decoration:underline; text-underline-offset:3px; }
+  .quiz-alt a:hover{ color:var(--white); }
+
+  .quiz-card{
+    background:var(--white); border-radius:18px; padding:38px 40px 32px;
+    text-align:left; color:var(--ink); box-shadow:0 24px 70px rgba(0,0,0,0.32);
+    position:relative;
+  }
+  .quiz-badge{
+    position:absolute; top:-13px; left:40px; background:var(--terracotta); color:var(--white);
+    font-family:'Inter',sans-serif; font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+    padding:6px 14px; border-radius:20px; box-shadow:0 4px 14px rgba(172,39,21,0.4);
+  }
+  .quiz-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; }
+  .quiz-counter{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--gray-text); }
+  .quiz-counter b{ color:var(--terracotta); font-size:15px; }
+  .quiz-progress{ display:flex; gap:5px; margin-bottom:26px; }
+  .quiz-progress .seg{ height:5px; flex:1; background:#E8E6E3; border-radius:3px; overflow:hidden; }
+  .quiz-progress .seg i{ display:block; height:100%; width:0%; background:var(--terracotta); transition:width .35s ease; }
   .quiz-progress .seg.done i{width:100%;}
   .quiz-progress .seg.current i{width:100%;}
   .quiz-step-label{ font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--sage); margin-bottom:10px;}
-  .quiz-question{ font-size:21px; font-weight:700; color:var(--green-darker); margin-bottom:22px; font-family:'Inter',sans-serif; letter-spacing:-0.01em; }
+  .quiz-question{ font-size:23px; font-weight:700; color:var(--green-darker); margin-bottom:22px; font-family:'Inter',sans-serif; letter-spacing:-0.01em; }
   .quiz-options{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   .quiz-options.single-col{ grid-template-columns:1fr; }
   .quiz-option{
@@ -243,7 +298,7 @@
     background:var(--off-white); font-size:14px; font-weight:500; color:var(--ink); cursor:pointer;
     transition:border-color .15s, background .15s, transform .1s;
   }
-  .quiz-option:hover{border-color:var(--terracotta); background:#fff;}
+  .quiz-option:hover{border-color:var(--terracotta); background:#fff; transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.06);}
   .quiz-option.selected{border-color:var(--terracotta); background:rgba(172,39,21,0.06); color:var(--terracotta-dark);}
   .quiz-input{
     width:100%; padding:14px 16px; border:1.5px solid var(--border); border-radius:10px;
@@ -254,9 +309,14 @@
   .quiz-back{ font-size:13px; color:var(--gray-text); cursor:pointer; font-weight:500; }
   .quiz-back:hover{color:var(--terracotta);}
   .quiz-continue{
-    background:var(--terracotta); color:var(--white); border:none; padding:12px 24px; border-radius:8px;
-    font-weight:600; font-size:14px; cursor:pointer; transition:background .15s;
+    background:var(--terracotta); color:var(--white); border:none; padding:14px 28px; border-radius:8px;
+    font-weight:700; font-size:14.5px; cursor:pointer; transition:background .15s, transform .15s, box-shadow .15s;
   }
+  .quiz-continue:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(172,39,21,0.32); }
+  .quiz-continue:disabled{ opacity:.45; cursor:not-allowed; transform:none; box-shadow:none; }
+  .quiz-error{ color:var(--terracotta-dark); font-size:13px; margin-top:10px; display:none; }
+  .quiz-error.show{ display:block; }
+  .quiz-privacy{ font-size:11.5px; color:var(--gray-text); margin-top:16px; line-height:1.5; }
   .quiz-continue:hover{background:var(--terracotta-dark);}
   .quiz-done{ text-align:center; padding:20px 0; }
   .quiz-done .check{
@@ -301,10 +361,6 @@
     .founders-grid{grid-template-columns:1fr;}
   }
 
-  footer{
-    background:var(--green-darker); color:rgba(255,255,255,0.5); text-align:center;
-    padding:32px; font-size:13px;
-  }
 
   @media (max-width: 860px){
     .hero{min-height:560px;}
@@ -318,12 +374,36 @@
     .teaser-media{min-height:220px;}
     nav{display:none;}
     .proof-logos{gap:32px;}
-    .quiz-card{padding:28px 22px;}
+    .quiz-layout{grid-template-columns:1fr; gap:40px;}
+    .quiz-intro h2{font-size:26px;}
+    .quiz-card{padding:32px 22px 26px;}
+    .quiz-badge{left:22px;}
     .quiz-options{grid-template-columns:1fr;}
     .quiz-contact-grid{grid-template-columns:1fr;}
   }
   @media (prefers-reduced-motion: reduce){
     *{transition:none !important; scroll-behavior:auto !important;}
+  }
+
+  /* ===== Rodapé padrão do site ===== */
+  .site-footer{ background:var(--green-darker); color:rgba(255,255,255,0.62); padding:64px 0 0; }
+  .footer-grid{ display:grid; grid-template-columns:1.5fr 1fr 1fr 1.1fr; gap:48px; padding-bottom:52px; }
+  .footer-brand img{ height:52px; width:auto; margin-bottom:18px; }
+  .footer-tagline{ font-family:'Inter',sans-serif; font-size:15px; font-weight:700; color:var(--green-accent-text); margin-bottom:12px; letter-spacing:-0.01em; }
+  .footer-desc{ font-size:13.5px; line-height:1.65; max-width:280px; }
+  .footer-col h4{ font-family:'Inter',sans-serif; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--white); margin-bottom:18px; }
+  .footer-col a, .footer-col p{ display:block; font-size:13.5px; color:rgba(255,255,255,0.62); margin-bottom:11px; transition:color .15s; }
+  .footer-col a:hover{ color:var(--green-accent-text); }
+  .footer-col .footer-addr{ color:rgba(255,255,255,0.42); font-size:12.5px; margin-top:16px; line-height:1.6; }
+  .footer-wa{ display:inline-flex !important; align-items:center; gap:8px; }
+  .footer-wa svg{ width:15px; height:15px; fill:#25D366; flex-shrink:0; }
+  .footer-bottom{ border-top:1px solid rgba(255,255,255,0.10); padding:22px 0; }
+  .footer-bottom-inner{ display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; font-size:12.5px; color:rgba(255,255,255,0.42); }
+  .footer-bottom-inner .footer-slogan{ font-family:'Inter',sans-serif; font-weight:600; color:var(--sage); }
+  @media (max-width: 860px){
+    .footer-grid{ grid-template-columns:1fr 1fr; gap:36px; }
+    .footer-brand{ grid-column:span 2; }
+    .footer-bottom-inner{ flex-direction:column; text-align:center; gap:8px; }
   }
 </style>
 </head>
@@ -331,14 +411,38 @@
 
 <div class="ticker">
   <div class="ticker-track">
-    <span>20 ANOS DE EMPRESA</span><span class="dot">•</span>
-    <span>ALGORITMOS PROPRIETÁRIOS DE IA</span><span class="dot">•</span>
-    <span>99,9% DE PRECISÃO</span><span class="dot">•</span>
-    <span>CLIENTES EM 3 CONTINENTES</span><span class="dot">•</span>
-    <span>20 ANOS DE EMPRESA</span><span class="dot">•</span>
-    <span>ALGORITMOS PROPRIETÁRIOS DE IA</span><span class="dot">•</span>
-    <span>99,9% DE PRECISÃO</span><span class="dot">•</span>
-    <span>CLIENTES EM 3 CONTINENTES</span><span class="dot">•</span>
+    <div class="ticker-group" aria-hidden="false">
+      <span>20 ANOS DE P&amp;D CONTÍNUO</span><span class="dot">&bull;</span>
+      <span>ALGORITMOS PROPRIETÁRIOS DE IA</span><span class="dot">&bull;</span>
+      <span>99,9% DE PRECISÃO VALIDADA</span><span class="dot">&bull;</span>
+      <span>CALIBRAÇÃO ADAPTATIVA AUTOMÁTICA</span><span class="dot">&bull;</span>
+      <span>CLIENTES EM 3 CONTINENTES</span><span class="dot">&bull;</span>
+      <span>6.000 PEÇAS POR MINUTO</span><span class="dot">&bull;</span>
+    </div>
+    <div class="ticker-group" aria-hidden="true">
+      <span>20 ANOS DE P&amp;D CONTÍNUO</span><span class="dot">&bull;</span>
+      <span>ALGORITMOS PROPRIETÁRIOS DE IA</span><span class="dot">&bull;</span>
+      <span>99,9% DE PRECISÃO VALIDADA</span><span class="dot">&bull;</span>
+      <span>CALIBRAÇÃO ADAPTATIVA AUTOMÁTICA</span><span class="dot">&bull;</span>
+      <span>CLIENTES EM 3 CONTINENTES</span><span class="dot">&bull;</span>
+      <span>6.000 PEÇAS POR MINUTO</span><span class="dot">&bull;</span>
+    </div>
+    <div class="ticker-group" aria-hidden="true">
+      <span>20 ANOS DE P&amp;D CONTÍNUO</span><span class="dot">&bull;</span>
+      <span>ALGORITMOS PROPRIETÁRIOS DE IA</span><span class="dot">&bull;</span>
+      <span>99,9% DE PRECISÃO VALIDADA</span><span class="dot">&bull;</span>
+      <span>CALIBRAÇÃO ADAPTATIVA AUTOMÁTICA</span><span class="dot">&bull;</span>
+      <span>CLIENTES EM 3 CONTINENTES</span><span class="dot">&bull;</span>
+      <span>6.000 PEÇAS POR MINUTO</span><span class="dot">&bull;</span>
+    </div>
+    <div class="ticker-group" aria-hidden="true">
+      <span>20 ANOS DE P&amp;D CONTÍNUO</span><span class="dot">&bull;</span>
+      <span>ALGORITMOS PROPRIETÁRIOS DE IA</span><span class="dot">&bull;</span>
+      <span>99,9% DE PRECISÃO VALIDADA</span><span class="dot">&bull;</span>
+      <span>CALIBRAÇÃO ADAPTATIVA AUTOMÁTICA</span><span class="dot">&bull;</span>
+      <span>CLIENTES EM 3 CONTINENTES</span><span class="dot">&bull;</span>
+      <span>6.000 PEÇAS POR MINUTO</span><span class="dot">&bull;</span>
+    </div>
   </div>
 </div>
 
@@ -354,7 +458,7 @@
       <a href="#produtos">Produtos</a>
       <a href="#institucional">Institucional</a>
       <a href="#blog">Blog</a>
-      <a href="#contato" class="nav-cta">Fale com um especialista</a>
+      <a href="#diagnostico" class="nav-cta">Fale com um especialista</a>
     </nav>
   </div>
 </header>
@@ -365,7 +469,7 @@
   <div class="hero-scrim"></div>
   <div class="hero-content">
     <p class="hero-eyebrow fade-in-up" style="animation-delay:.05s">Tecnologia industrial brasileira</p>
-    <h1 class="fade-in-up" style="animation-delay:.18s">99,9% de precisão.<br><span class="accent">20x menor custo.</span><br>0 paradas para recalibrar.</h1>
+    <h1 class="fade-in-up" style="animation-delay:.18s"><span class="sr-only">Sanick — sensores inteligentes de contagem industrial. </span>99,9% de precisão.<br><span class="accent">20x menor custo.</span><br>0 paradas para recalibrar.</h1>
     <p class="sub fade-in-up" style="animation-delay:.32s">20 anos de P&D e algoritmos proprietários de IA, validados em 6 segmentos industriais — do parafuso à cápsula farmacêutica.</p>
     <div class="cta-row fade-in-up" style="animation-delay:.46s">
       <a href="#contato" class="btn-primary">Fale com um especialista</a>
@@ -409,6 +513,26 @@
         <h3>Atendimento humanizado</h3>
         <p>Suporte técnico direto, com retorno em até 24 horas.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="quiz-section reveal" id="diagnostico">
+  <div class="wrap quiz-layout">
+    <div class="quiz-intro">
+      <p class="section-eyebrow">Diagn&oacute;stico gratuito</p>
+      <h2>Quanto sua produ&ccedil;&atilde;o perde por contagem imprecisa?</h2>
+      <p>Responda 5 perguntas r&aacute;pidas sobre a sua linha. Nosso time t&eacute;cnico devolve uma an&aacute;lise com base no seu volume real de produ&ccedil;&atilde;o.</p>
+      <ul class="quiz-benefits">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Resposta de um especialista em at&eacute; 24 horas</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> An&aacute;lise baseada no seu volume e tipo de pe&ccedil;a</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg> Sem custo e sem compromisso de compra</li>
+      </ul>
+      <p class="quiz-alt">Prefere falar agora? <a href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Vim%20do%20site%20da%20Sanick%20e%20prefiro%20falar%20direto%20no%20WhatsApp%20em%20vez%20de%20responder%20o%20diagn%C3%B3stico." target="_blank" rel="noopener">Chame no WhatsApp</a></p>
+    </div>
+
+    <div class="quiz-card" id="quizCard">
+      <span class="quiz-badge">5 perguntas &middot; 1 minuto</span>
     </div>
   </div>
 </section>
@@ -507,14 +631,12 @@
 <section class="final-cta reveal" id="contato">
   <div class="wrap">
     <p class="section-eyebrow">Conte com a Sanick</p>
-    <h2>Quanto sua produção perde por contagem imprecisa?</h2>
-    <p class="sub">Responda 5 perguntas rápidas e fale com um especialista sobre o seu caso.</p>
+    <h2>Fale com quem desenvolveu o sensor.</h2>
+    <p class="sub">Sem call center e sem intermedi&aacute;rio: voc&ecirc; fala direto com o time t&eacute;cnico da Sanick, com resposta em at&eacute; 24 horas.</p>
 
-    <div class="quiz-card" id="quizCard"></div>
-
-    <a class="whatsapp-cta" href="https://wa.me/5549999224604?text=Ol%C3%A1!%20Vim%20do%20site%20da%20Sanick%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20Intelicount." target="_blank" rel="noopener">
+    <a class="whatsapp-cta" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Vim%20da%20se%C3%A7%C3%A3o%20de%20contato%20do%20site%20da%20Sanick%20e%20gostaria%20de%20falar%20com%20um%20especialista." target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.004c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2zm5.8 14.1c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.12.11-1.8-.11a16.4 16.4 0 0 1-1.65-.61c-2.9-1.25-4.8-4.17-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36l.55.01c.18.01.41-.07.64.49.24.58.81 2 .88 2.15.07.14.12.31.02.5-.1.2-.15.32-.3.49-.14.18-.3.4-.44.53-.14.14-.29.29-.13.57.17.29.75 1.24 1.61 2.01 1.11 1 2.04 1.31 2.33 1.46.29.14.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.66.78 1.94.93.29.14.48.21.55.33.07.12.07.68-.17 1.36z"/></svg>
-      Fale conosco no WhatsApp
+      Falar no WhatsApp
     </a>
   </div>
 </section>
@@ -554,26 +676,70 @@
   </div>
 </section>
 
-<footer>
-  <div class="wrap">Sanick Equipamentos de Precisão — Chapecó/SC, Brasil · Conte com a Sanick.</div>
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <img src="assets/logo-sanick.png" alt="Sanick Equipamentos de Precis&atilde;o">
+      <p class="footer-tagline">Precis&atilde;o que gera tranquilidade.</p>
+      <p class="footer-desc">Tecnologia industrial brasileira para contagem de pe&ccedil;as. 20 anos de P&amp;D, clientes em 3 continentes.</p>
+    </div>
+
+    <nav class="footer-col" aria-label="Navega&ccedil;&atilde;o do rodap&eacute;">
+      <h4>Navega&ccedil;&atilde;o</h4>
+      <a href="index.html">P&aacute;gina inicial</a>
+      <a href="intelicount.html">Sanick Intelicount</a>
+      <a href="institucional.html">Institucional</a>
+      <a href="index.html#solucoes">Solu&ccedil;&otilde;es por segmento</a>
+      <a href="index.html#diagnostico">Diagn&oacute;stico gratuito</a>
+    </nav>
+
+    <nav class="footer-col" aria-label="Links do produto">
+      <h4>Produto</h4>
+      <a href="intelicount.html#como-funciona">Como funciona</a>
+      <a href="intelicount.html#ficha-tecnica">Ficha t&eacute;cnica</a>
+      <a href="intelicount.html#roi">Calculadora de ROI</a>
+      <a href="assets/sanick-intelicount-guia-rapido.pdf" target="_blank" rel="noopener">Guia r&aacute;pido (PDF)</a>
+      <a href="assets/sanick-intelicount-manual.pdf" target="_blank" rel="noopener">Manual do usu&aacute;rio (PDF)</a>
+    </nav>
+
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <a href="tel:+554933234640">+55 49 3323-4640</a>
+      <a class="footer-wa" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Vim%20pelo%20rodap%C3%A9%20da%20p%C3%A1gina%20inicial%20do%20site%20da%20Sanick%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.004c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2zm5.8 14.1c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.12.11-1.8-.11a16.4 16.4 0 0 1-1.65-.61c-2.9-1.25-4.8-4.17-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36l.55.01c.18.01.41-.07.64.49.24.58.81 2 .88 2.15.07.14.12.31.02.5-.1.2-.15.32-.3.49-.14.18-.3.4-.44.53-.14.14-.29.29-.13.57.17.29.75 1.24 1.61 2.01 1.11 1 2.04 1.31 2.33 1.46.29.14.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.66.78 1.94.93.29.14.48.21.55.33.07.12.07.68-.17 1.36z"/></svg> WhatsApp t&eacute;cnico</a>
+      <a href="mailto:tecnico@sanick.com.br">tecnico@sanick.com.br</a>
+      <p class="footer-addr">Chapec&oacute; &mdash; Santa Catarina<br>Brasil</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="wrap footer-bottom-inner">
+      <span>&copy; 2026 Sanick Equipamentos de Precis&atilde;o. Todos os direitos reservados.</span>
+      <span class="footer-slogan">Conte com a Sanick.</span>
+    </div>
+  </div>
 </footer>
 
 <script>
+const FORM_NAME = 'diagnostico-sanick';
+
 const steps = [
   {
     label: "Pergunta 1 de 5",
+    field: "o_que_conta",
     question: "O que sua empresa precisa contar?",
     type: "choice",
     options: ["Parafusos, porcas e fixadores", "Sementes e grãos", "Componentes eletrônicos", "Pequenas peças metálicas"]
   },
   {
     label: "Pergunta 2 de 5",
+    field: "tamanho_peca",
     question: "Qual o tamanho médio das peças?",
     type: "choice",
     options: ["Menos de 1mm", "Entre 1mm e 20mm", "Entre 20mm e 50mm", "Maiores que 50mm"]
   },
   {
     label: "Pergunta 3 de 5",
+    field: "tecnologia_atual",
     question: "Qual tecnologia de contagem você usa hoje?",
     type: "choice",
     singleCol: true,
@@ -581,12 +747,14 @@ const steps = [
   },
   {
     label: "Pergunta 4 de 5",
+    field: "perda_estimada",
     question: "Quanto você estima perder por contagem imprecisa?",
     type: "text",
     placeholder: "Ex: cerca de 3% por lote, ou \"não sei responder\""
   },
   {
     label: "Pergunta 5 de 5",
+    field: "volume_mensal",
     question: "Qual seu volume médio de peças por mês?",
     type: "choice",
     singleCol: true,
@@ -601,77 +769,124 @@ const steps = [
 
 let current = 0;
 const answers = {};
+const contact = { nome: '', empresa: '', email: '', telefone: '' };
 const card = document.getElementById('quizCard');
+const BADGE = '<span class="quiz-badge">5 perguntas &middot; 1 minuto</span>';
 
 function renderProgress(){
   let html = '<div class="quiz-progress">';
   steps.forEach((s,i)=>{
     let cls = i < current ? 'seg done' : (i === current ? 'seg current' : 'seg');
-    html += `<div class="${cls}"><i></i></div>`;
+    html += '<div class="' + cls + '"><i></i></div>';
   });
   html += '</div>';
   return html;
 }
 
-function next(){
-  if(current < steps.length - 1){ current++; render(); }
-}
-function back(){
-  if(current > 0){ current--; render(); }
-}
+function next(){ if(current < steps.length - 1){ current++; render(); } }
+function back(){ if(current > 0){ current--; render(); } }
 
 function selectOption(i, opt){
   answers[i] = opt;
-  if(i === current){
-    setTimeout(()=>{ next(); }, 220);
-  }
   render();
+  if(i === current){ setTimeout(next, 240); }
+}
+
+function setContact(field, value){ contact[field] = value; }
+
+function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+function submitQuiz(){
+  const btn = document.getElementById('quizSubmit');
+  const err = document.getElementById('quizError');
+
+  if(!contact.nome.trim()){ showError('Informe seu nome para receber o diagnóstico.'); return; }
+  if(!validEmail(contact.email.trim())){ showError('Informe um e-mail válido.'); return; }
+
+  if(btn){ btn.disabled = true; btn.textContent = 'Enviando...'; }
+  if(err){ err.classList.remove('show'); }
+
+  const payload = {
+    'form-name': FORM_NAME,
+    'nome': contact.nome.trim(),
+    'empresa': contact.empresa.trim(),
+    'email': contact.email.trim(),
+    'telefone': contact.telefone.trim(),
+    'origem': 'Quiz de diagnóstico — home'
+  };
+  steps.forEach((s, i) => { if(s.field){ payload[s.field] = answers[i] || '(não respondido)'; } });
+
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(payload).toString()
+  })
+  .then(function(res){
+    if(!res.ok) throw new Error('Falha no envio');
+    current = steps.length;
+    render();
+  })
+  .catch(function(){
+    if(btn){ btn.disabled = false; btn.textContent = 'Receber diagnóstico'; }
+    showError('Não conseguimos enviar agora. Tente novamente ou fale com a gente no WhatsApp.');
+  });
+}
+
+function showError(msg){
+  const err = document.getElementById('quizError');
+  if(err){ err.textContent = msg; err.classList.add('show'); }
 }
 
 function render(){
   if(current >= steps.length){
-    card.innerHTML = `
-      <div class="quiz-done">
-        <div class="check">&#10003;</div>
-        <h3>Diagnóstico recebido.</h3>
-        <p>Um especialista Sanick entra em contato em até 24 horas com sua análise personalizada.</p>
-      </div>`;
+    card.innerHTML =
+      '<div class="quiz-done">' +
+        '<div class="check">&#10003;</div>' +
+        '<h3>Diagnóstico recebido.</h3>' +
+        '<p>Um especialista Sanick entra em contato em até 24 horas com sua análise personalizada.</p>' +
+      '</div>';
     return;
   }
 
   const s = steps[current];
-  let inner = renderProgress();
-  inner += `<p class="quiz-step-label">${s.label}</p>`;
-  inner += `<p class="quiz-question">${s.question}</p>`;
+  let inner = BADGE;
+  inner += '<div class="quiz-head"><p class="quiz-step-label">' + s.label + '</p>' +
+           '<span class="quiz-counter"><b>' + (current+1) + '</b>/' + steps.length + '</span></div>';
+  inner += renderProgress();
+  inner += '<p class="quiz-question">' + s.question + '</p>';
 
   if(s.type === 'choice'){
-    inner += `<div class="quiz-options ${s.singleCol ? 'single-col' : ''}">`;
-    s.options.forEach(opt=>{
+    inner += '<div class="quiz-options ' + (s.singleCol ? 'single-col' : '') + '">';
+    s.options.forEach(function(opt){
       const sel = answers[current] === opt ? 'selected' : '';
-      inner += `<button type="button" class="quiz-option ${sel}" onclick="selectOption(${current}, this.textContent)">${opt}</button>`;
+      inner += '<button type="button" class="quiz-option ' + sel + '" onclick="selectOption(' + current + ', this.textContent)">' + opt + '</button>';
     });
-    inner += `</div>`;
-    inner += `<div class="quiz-nav">`;
-    inner += current > 0 ? `<span class="quiz-back" onclick="back()">&larr; Voltar</span>` : `<span></span>`;
-    inner += `</div>`;
+    inner += '</div>';
+    inner += '<div class="quiz-nav">';
+    inner += current > 0 ? '<span class="quiz-back" onclick="back()">&larr; Voltar</span>' : '<span></span>';
+    inner += '</div>';
+
   } else if(s.type === 'text'){
     const val = answers[current] || '';
-    inner += `<input type="text" class="quiz-input" placeholder="${s.placeholder}" value="${val}" oninput="answers[${current}]=this.value">`;
-    inner += `<div class="quiz-nav">`;
-    inner += current > 0 ? `<span class="quiz-back" onclick="back()">&larr; Voltar</span>` : `<span></span>`;
-    inner += `<button class="quiz-continue" onclick="next()">Continuar</button>`;
-    inner += `</div>`;
+    inner += '<input type="text" class="quiz-input" placeholder="' + s.placeholder + '" value="' + val + '" oninput="answers[' + current + ']=this.value">';
+    inner += '<div class="quiz-nav">';
+    inner += current > 0 ? '<span class="quiz-back" onclick="back()">&larr; Voltar</span>' : '<span></span>';
+    inner += '<button class="quiz-continue" onclick="next()">Continuar</button>';
+    inner += '</div>';
+
   } else if(s.type === 'contact'){
-    inner += `<div class="quiz-contact-grid">
-      <input type="text" class="quiz-input" placeholder="Nome" style="grid-column:span 1;">
-      <input type="text" class="quiz-input" placeholder="Empresa" style="grid-column:span 1;">
-      <input type="email" class="quiz-input" placeholder="E-mail" style="grid-column:span 2;">
-      <input type="tel" class="quiz-input" placeholder="Telefone" style="grid-column:span 2;">
-    </div>`;
-    inner += `<div class="quiz-nav">`;
-    inner += `<span class="quiz-back" onclick="back()">&larr; Voltar</span>`;
-    inner += `<button class="quiz-continue" onclick="current++; render();">Receber diagnóstico</button>`;
-    inner += `</div>`;
+    inner += '<div class="quiz-contact-grid">' +
+      '<input type="text" class="quiz-input" placeholder="Nome*" value="' + contact.nome + '" oninput="setContact(\'nome\', this.value)">' +
+      '<input type="text" class="quiz-input" placeholder="Empresa" value="' + contact.empresa + '" oninput="setContact(\'empresa\', this.value)">' +
+      '<input type="email" class="quiz-input" placeholder="E-mail*" style="grid-column:span 2;" value="' + contact.email + '" oninput="setContact(\'email\', this.value)">' +
+      '<input type="tel" class="quiz-input" placeholder="Telefone / WhatsApp" style="grid-column:span 2;" value="' + contact.telefone + '" oninput="setContact(\'telefone\', this.value)">' +
+    '</div>';
+    inner += '<p class="quiz-error" id="quizError"></p>';
+    inner += '<div class="quiz-nav">';
+    inner += '<span class="quiz-back" onclick="back()">&larr; Voltar</span>';
+    inner += '<button class="quiz-continue" id="quizSubmit" onclick="submitQuiz()">Receber diagnóstico</button>';
+    inner += '</div>';
+    inner += '<p class="quiz-privacy">Usamos seus dados apenas para enviar este diagnóstico e entrar em contato sobre a sua aplicação.</p>';
   }
 
   card.innerHTML = inner;
@@ -679,58 +894,24 @@ function render(){
 
 render();
 
-// Animated counters (stats bar)
-function animateCounter(el){
-  const target = parseFloat(el.dataset.target);
-  const suffix = el.dataset.suffix || '';
-  const decimals = parseInt(el.dataset.decimals || '0');
-  const duration = 1400;
-  const start = performance.now();
-  function tick(now){
-    const progress = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    const value = target * eased;
-    el.textContent = value.toFixed(decimals).replace('.', ',') + suffix;
-    if(progress < 1){ requestAnimationFrame(tick); }
-    else { el.textContent = target.toFixed(decimals).replace('.', ',') + suffix; }
-  }
-  requestAnimationFrame(tick);
-}
-
-const statObserver = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.querySelectorAll('.num[data-target]').forEach(animateCounter);
-      statObserver.unobserve(entry.target);
-    }
-  });
-}, {threshold:0.4});
-const statsBarEl = document.querySelector('.stats-bar');
-if(statsBarEl){ statObserver.observe(statsBarEl); }
-
-// Scroll-reveal for sections
-const revealObserver = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add('in-view');
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, {threshold:0.15});
-document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
-
-// Hero carousel (crossfade)
-const heroBgs = document.querySelectorAll('.hero-bg');
-let heroIndex = 0;
-if(heroBgs.length > 1){
-  setInterval(()=>{
-    heroBgs[heroIndex].classList.remove('hero-bg-active');
-    heroIndex = (heroIndex + 1) % heroBgs.length;
-    heroBgs[heroIndex].classList.add('hero-bg-active');
-  }, 5000);
-}
-
 </script>
 
+
+<!-- Formulario estatico apenas para a deteccao do Netlify Forms durante o build.
+     O envio real e feito via fetch() no script da pagina. Nao remover. -->
+<form name="diagnostico-sanick" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="diagnostico-sanick">
+  <input type="text" name="bot-field">
+  <input type="text" name="nome">
+  <input type="text" name="empresa">
+  <input type="email" name="email">
+  <input type="tel" name="telefone">
+  <input type="text" name="o_que_conta">
+  <input type="text" name="tamanho_peca">
+  <input type="text" name="tecnologia_atual">
+  <input type="text" name="perda_estimada">
+  <input type="text" name="volume_mensal">
+  <input type="text" name="origem">
+</form>
 </body>
 </html>

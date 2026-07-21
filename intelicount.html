@@ -4,6 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sanick Intelicount — Sensor inteligente de contagem industrial</title>
+<meta name="description" content="Sensor óptico por infravermelho com auto-tuning: 99,9% de precisão, 6.000 peças/min e grau de proteção IP65. Ficha técnica completa e calculadora de ROI.">
+<link rel="canonical" href="https://sanick.netlify.app/intelicount">
+<meta name="theme-color" content="#1E3A2E">
+<meta name="author" content="Sanick Equipamentos de Precisão">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sanick Equipamentos de Precisão">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://sanick.netlify.app/intelicount">
+<meta property="og:title" content="Sanick Intelicount — Sensor inteligente de contagem">
+<meta property="og:description" content="Sensor óptico por infravermelho com auto-tuning: 99,9% de precisão, 6.000 peças/min e grau de proteção IP65. Ficha técnica completa e calculadora de ROI.">
+<meta property="og:image" content="https://sanick.netlify.app/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sensores Sanick Intelicount instalados em linha de produção industrial">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sanick Intelicount — Sensor inteligente de contagem">
+<meta name="twitter:description" content="Sensor óptico por infravermelho com auto-tuning: 99,9% de precisão, 6.000 peças/min e grau de proteção IP65. Ficha técnica completa e calculadora de ROI.">
+<meta name="twitter:image" content="https://sanick.netlify.app/assets/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -30,6 +50,7 @@
   h1,h2,h3,.display{ font-family:'Inter', sans-serif; font-weight:700; letter-spacing:-0.02em; color:var(--green-darker); }
   .mono{font-family:'JetBrains Mono', monospace;}
   a{color:inherit; text-decoration:none;}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
   img{display:block; max-width:100%;}
   button{font-family:inherit;}
   .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
@@ -175,7 +196,6 @@
   .final-cta h2{color:var(--white); font-size:28px; max-width:600px; margin:0 auto 16px;}
   .final-cta p.sub{color:rgba(255,255,255,0.72); max-width:520px; margin:0 auto 32px;}
 
-  footer{ background:var(--green-darker); color:rgba(255,255,255,0.5); text-align:center; padding:28px 0; font-size:13px; border-top:1px solid rgba(255,255,255,0.08); }
 
   @media (max-width: 860px){
     .prod-hero h1{font-size:32px;}
@@ -191,6 +211,27 @@
     .testimonials-grid{grid-template-columns:1fr;}
     nav{gap:16px;}
     nav a:not(.nav-cta){display:none;}
+  }
+
+  /* ===== Rodapé padrão do site ===== */
+  .site-footer{ background:var(--green-darker); color:rgba(255,255,255,0.62); padding:64px 0 0; }
+  .footer-grid{ display:grid; grid-template-columns:1.5fr 1fr 1fr 1.1fr; gap:48px; padding-bottom:52px; }
+  .footer-brand img{ height:52px; width:auto; margin-bottom:18px; }
+  .footer-tagline{ font-family:'Inter',sans-serif; font-size:15px; font-weight:700; color:var(--green-accent-text); margin-bottom:12px; letter-spacing:-0.01em; }
+  .footer-desc{ font-size:13.5px; line-height:1.65; max-width:280px; }
+  .footer-col h4{ font-family:'Inter',sans-serif; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--white); margin-bottom:18px; }
+  .footer-col a, .footer-col p{ display:block; font-size:13.5px; color:rgba(255,255,255,0.62); margin-bottom:11px; transition:color .15s; }
+  .footer-col a:hover{ color:var(--green-accent-text); }
+  .footer-col .footer-addr{ color:rgba(255,255,255,0.42); font-size:12.5px; margin-top:16px; line-height:1.6; }
+  .footer-wa{ display:inline-flex !important; align-items:center; gap:8px; }
+  .footer-wa svg{ width:15px; height:15px; fill:#25D366; flex-shrink:0; }
+  .footer-bottom{ border-top:1px solid rgba(255,255,255,0.10); padding:22px 0; }
+  .footer-bottom-inner{ display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; font-size:12.5px; color:rgba(255,255,255,0.42); }
+  .footer-bottom-inner .footer-slogan{ font-family:'Inter',sans-serif; font-weight:600; color:var(--sage); }
+  @media (max-width: 860px){
+    .footer-grid{ grid-template-columns:1fr 1fr; gap:36px; }
+    .footer-brand{ grid-column:span 2; }
+    .footer-bottom-inner{ flex-direction:column; text-align:center; gap:8px; }
   }
 </style>
 </head>
@@ -208,7 +249,7 @@
       <a href="index.html#solucoes">Soluções</a>
       <a href="institucional.html">Institucional</a>
       <a href="index.html#blog">Blog</a>
-      <a href="index.html#contato" class="nav-cta">Fale com um especialista</a>
+      <a href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Estou%20na%20p%C3%A1gina%20do%20Sanick%20Intelicount%20e%20gostaria%20de%20falar%20com%20um%20especialista.%20%28via%20menu%20do%20topo%29" class="nav-cta" target="_blank" rel="noopener">Fale com um especialista</a>
     </nav>
   </div>
 </header>
@@ -224,13 +265,13 @@
   <div class="prod-hero-inner">
     <div class="prod-hero-content">
       <p class="prod-hero-eyebrow fade-in-up">Produto principal Sanick</p>
-      <h1 class="fade-in-up" style="animation-delay:.08s">Sanick Intelicount</h1>
+      <h1 class="fade-in-up" style="animation-delay:.08s">Sanick Intelicount<span class="sr-only"> — sensor inteligente de contagem industrial por infravermelho</span></h1>
       <p class="subname fade-in-up" style="animation-delay:.14s">Sensor inteligente de contagem por infravermelho · IRDA</p>
       <p class="sub fade-in-up" style="animation-delay:.2s">Contagem de peças por interrupção de plano infravermelho, com auto-tuning que adapta o sensor à luz do ambiente e ao tamanho da peça — sem parar sua produção para recalibrar.</p>
       <div class="chip-row fade-in-up" style="animation-delay:.26s">
         <div class="chip"><b>99,9%</b> de precisão</div>
         <div class="chip"><b>6.000</b> peças/min</div>
-        <div class="chip"><b>60x</b> menor custo</div>
+        <div class="chip"><b>20x</b> menor custo</div>
         <div class="chip"><b>IP65</b></div>
       </div>
       <div class="cta-row fade-in-up" style="animation-delay:.32s">
@@ -318,7 +359,7 @@
       <div class="pillar">
         <div class="n">01</div>
         <h3>Preço disruptivo</h3>
-        <p>60x menor custo que alternativas internacionais de mesma categoria — sem abrir mão de precisão industrial.</p>
+        <p>20x menor custo que alternativas internacionais de mesma categoria — sem abrir mão de precisão industrial.</p>
       </div>
       <div class="pillar">
         <div class="n">02</div>
@@ -470,7 +511,8 @@
         <div class="sub-metric"><span>Economia anual estimada</span><b class="mono" id="roiEconomiaAnual">R$ 0</b></div>
         <div class="sub-metric"><span>Custo do Intelicount</span><b class="mono">R$ 2.400 / unidade</b></div>
         <div class="sub-metric"><span>Payback estimado</span><b class="mono" id="roiPayback">—</b></div>
-        <p class="roi-disclaimer">Estimativa ilustrativa baseada nos valores informados acima. Não considera custos de instalação, integração ou variações operacionais específicas da sua linha. Fale com nosso time para um cálculo detalhado da sua aplicação.</p>
+        <a class="btn-primary" style="margin-top:18px; text-align:center; font-size:14px; padding:13px 20px;" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Usei%20a%20calculadora%20de%20ROI%20no%20site%20e%20gostaria%20de%20um%20c%C3%A1lculo%20detalhado%20para%20a%20minha%20linha%20de%20produ%C3%A7%C3%A3o." target="_blank" rel="noopener">Quero um cálculo para a minha linha</a>
+        <p class="roi-disclaimer">Estimativa ilustrativa baseada nos valores informados acima. Não considera custos de instalação, integração ou variações operacionais específicas da sua linha.</p>
       </div>
     </div>
   </div>
@@ -483,17 +525,17 @@
     <div class="support-grid">
       <div class="support-card">
         <p class="tag">Telefone</p>
-        <p class="val">+55 49 3323-4640</p>
+        <p class="val"><a href="tel:+554933234640" style="color:inherit;">+55 49 3323-4640</a></p>
         <p>Suporte técnico direto, sem central de atendimento automatizada.</p>
       </div>
       <div class="support-card">
         <p class="tag">WhatsApp</p>
-        <p class="val">+55 49 9922-4604</p>
+        <p class="val"><a href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Estou%20na%20p%C3%A1gina%20do%20Intelicount%20e%20tenho%20uma%20d%C3%BAvida%20t%C3%A9cnica%20sobre%20instala%C3%A7%C3%A3o%20ou%20integra%C3%A7%C3%A3o%20do%20sensor." target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:3px;">+55 49 9922-4604</a></p>
         <p>Resposta em até 24h para dúvidas de instalação, integração e troubleshooting.</p>
       </div>
       <div class="support-card">
         <p class="tag">E-mail técnico</p>
-        <p class="val" style="font-size:15px;">tecnico@sanick.com.br</p>
+        <p class="val" style="font-size:15px;"><a href="mailto:tecnico@sanick.com.br" style="color:inherit;">tecnico@sanick.com.br</a></p>
         <p>Para solicitações de reparo, garantia e documentação adicional.</p>
       </div>
     </div>
@@ -538,12 +580,51 @@
     <p class="section-eyebrow">Conte com a Sanick</p>
     <h2>Pronto para eliminar o erro de contagem da sua linha?</h2>
     <p class="sub">Fale com nosso time técnico e veja o Intelicount funcionando com as peças da sua própria produção.</p>
-    <a class="btn-primary" href="index.html#contato">Fale com um especialista</a>
+    <a class="btn-primary" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Quero%20ver%20o%20Sanick%20Intelicount%20funcionando%20com%20as%20pe%C3%A7as%20da%20minha%20produ%C3%A7%C3%A3o.%20%28via%20CTA%20final%20da%20p%C3%A1gina%20do%20produto%29" target="_blank" rel="noopener">Falar com um especialista</a>
   </div>
 </section>
 
-<footer>
-  <div class="wrap">Sanick Equipamentos de Precisão — Chapecó/SC, Brasil · Conte com a Sanick.</div>
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <img src="assets/logo-sanick.png" alt="Sanick Equipamentos de Precis&atilde;o">
+      <p class="footer-tagline">Precis&atilde;o que gera tranquilidade.</p>
+      <p class="footer-desc">Tecnologia industrial brasileira para contagem de pe&ccedil;as. 20 anos de P&amp;D, clientes em 3 continentes.</p>
+    </div>
+
+    <nav class="footer-col" aria-label="Navega&ccedil;&atilde;o do rodap&eacute;">
+      <h4>Navega&ccedil;&atilde;o</h4>
+      <a href="index.html">P&aacute;gina inicial</a>
+      <a href="intelicount.html">Sanick Intelicount</a>
+      <a href="institucional.html">Institucional</a>
+      <a href="index.html#solucoes">Solu&ccedil;&otilde;es por segmento</a>
+      <a href="index.html#diagnostico">Diagn&oacute;stico gratuito</a>
+    </nav>
+
+    <nav class="footer-col" aria-label="Links do produto">
+      <h4>Produto</h4>
+      <a href="intelicount.html#como-funciona">Como funciona</a>
+      <a href="intelicount.html#ficha-tecnica">Ficha t&eacute;cnica</a>
+      <a href="intelicount.html#roi">Calculadora de ROI</a>
+      <a href="assets/sanick-intelicount-guia-rapido.pdf" target="_blank" rel="noopener">Guia r&aacute;pido (PDF)</a>
+      <a href="assets/sanick-intelicount-manual.pdf" target="_blank" rel="noopener">Manual do usu&aacute;rio (PDF)</a>
+    </nav>
+
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <a href="tel:+554933234640">+55 49 3323-4640</a>
+      <a class="footer-wa" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Vim%20pelo%20rodap%C3%A9%20da%20p%C3%A1gina%20do%20Intelicount%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20sensor." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.004c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2zm5.8 14.1c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.12.11-1.8-.11a16.4 16.4 0 0 1-1.65-.61c-2.9-1.25-4.8-4.17-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36l.55.01c.18.01.41-.07.64.49.24.58.81 2 .88 2.15.07.14.12.31.02.5-.1.2-.15.32-.3.49-.14.18-.3.4-.44.53-.14.14-.29.29-.13.57.17.29.75 1.24 1.61 2.01 1.11 1 2.04 1.31 2.33 1.46.29.14.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.66.78 1.94.93.29.14.48.21.55.33.07.12.07.68-.17 1.36z"/></svg> WhatsApp t&eacute;cnico</a>
+      <a href="mailto:tecnico@sanick.com.br">tecnico@sanick.com.br</a>
+      <p class="footer-addr">Chapec&oacute; &mdash; Santa Catarina<br>Brasil</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="wrap footer-bottom-inner">
+      <span>&copy; 2026 Sanick Equipamentos de Precis&atilde;o. Todos os direitos reservados.</span>
+      <span class="footer-slogan">Conte com a Sanick.</span>
+    </div>
+  </div>
 </footer>
 
 <script>
