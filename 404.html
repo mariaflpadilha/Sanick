@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página não encontrada — Sanick</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --terracotta:#AC2715; --terracotta-dark:#8A1F11;
+    --green-darker:#1E3A2E; --sage:#7F998F; --green-accent-text:#8FCDA8;
+    --white:#FFFFFF;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'IBM Plex Sans', sans-serif;
+    background:var(--green-darker);
+    color:var(--white);
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:32px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .code{
+    font-family:'JetBrains Mono', monospace;
+    font-size:14px; color:var(--sage);
+    letter-spacing:.08em; margin-bottom:20px;
+  }
+  h1{
+    font-family:'Inter', sans-serif; font-weight:700; letter-spacing:-0.02em;
+    font-size:34px; line-height:1.2; margin-bottom:16px; max-width:520px;
+  }
+  h1 .accent{color:var(--green-accent-text);}
+  p{font-size:16px; color:rgba(255,255,255,0.72); max-width:440px; margin:0 auto 32px;}
+  .btn{
+    background:var(--terracotta); color:var(--white); font-weight:700; font-size:15px;
+    padding:15px 28px; border-radius:6px; display:inline-block;
+    text-decoration:none; transition:background .15s, transform .15s;
+  }
+  .btn:hover{background:var(--terracotta-dark); transform:translateY(-2px);}
+  .links{margin-top:28px; font-size:14px;}
+  .links a{color:var(--sage); text-decoration:none; margin:0 10px;}
+  .links a:hover{color:var(--white);}
+</style>
+</head>
+<body>
+  <div>
+    <p class="code">ERRO 404</p>
+    <h1>Essa página nós <span class="accent">não contamos</span>.</h1>
+    <p>O endereço que você procurou não existe ou foi movido. Mas o resto do site continua no lugar.</p>
+    <a href="/" class="btn">Voltar para a home</a>
+    <div class="links">
+      <a href="/intelicount.html">Sanick Intelicount</a>
+      <a href="/institucional.html">Institucional</a>
+    </div>
+  </div>
+</body>
+</html>

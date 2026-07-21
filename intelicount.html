@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanick Intelicount — Sensor inteligente de contagem industrial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --terracotta:#AC2715; --terracotta-dark:#8A1F11;
+    --green-dark:#2F5643; --green-darker:#1E3A2E;
+    --sage:#7F998F; --green-accent-text:#8FCDA8;
+    --ink:#242422; --gray-text:#5B6560;
+    --white:#FFFFFF; --off-white:#FAFAF9;
+    --border:rgba(36,36,34,0.10);
+    --code-bg:#12251C;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+
+  @keyframes fadeInUp{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
+  .fade-in-up{ opacity:0; animation:fadeInUp .8s ease forwards; }
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  body{ font-family:'IBM Plex Sans', sans-serif; color:var(--ink); background:var(--off-white); line-height:1.55; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,.display{ font-family:'Inter', sans-serif; font-weight:700; letter-spacing:-0.02em; color:var(--green-darker); }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+  button{font-family:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  section{padding:88px 0;}
+
+  header{ position:sticky; top:0; z-index:50; background:rgba(250,250,249,0.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); }
+  .header-inner{ display:flex; align-items:center; justify-content:space-between; padding:14px 32px; max-width:1180px; margin:0 auto; }
+  .brand{display:flex; align-items:center; gap:14px;}
+  .brand img{height:52px; width:auto;}
+  .brand .slogan{ font-family:'Inter',sans-serif; font-size:12px; font-weight:500; color:var(--gray-text); letter-spacing:0.02em; font-style:italic; border-left:1px solid var(--border); padding-left:14px; }
+  nav{display:flex; gap:28px; align-items:center;}
+  nav a{font-size:14px; font-weight:500; color:var(--green-darker); transition:color .15s;}
+  nav a:hover{color:var(--terracotta);}
+  nav a.active{color:var(--terracotta);}
+  nav a.back-link{ color:var(--gray-text); font-weight:600; padding-right:18px; border-right:1px solid var(--border); }
+  nav a.back-link:hover{color:var(--green-darker);}
+  .nav-cta{ background:var(--terracotta); color:var(--white) !important; padding:10px 20px; border-radius:6px; font-weight:600; }
+  .nav-cta:hover{background:var(--terracotta-dark); color:var(--white) !important;}
+
+  .btn-primary{ background:var(--terracotta); color:var(--white); font-weight:700; font-size:15px; padding:15px 28px; border-radius:6px; border:none; cursor:pointer; transition:transform .15s, box-shadow .15s, background .15s; display:inline-block; }
+  .btn-primary.btn-white{ background:var(--white); color:var(--terracotta-dark); }
+  .btn-primary.btn-white:hover{ background:#F0EDE9; color:var(--terracotta-dark); transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.18); }
+  .btn-primary:hover{background:var(--terracotta-dark); transform:translateY(-2px); box-shadow:0 8px 20px rgba(172,39,21,0.35);}
+  .btn-secondary{ color:var(--white); font-weight:600; font-size:15px; padding:15px 20px; border:1px solid rgba(255,255,255,0.35); border-radius:6px; transition:border-color .15s, background .15s; display:inline-block; }
+  .btn-secondary:hover{border-color:var(--white); background:rgba(255,255,255,0.10);}
+  .btn-ghost{ color:var(--green-darker); font-weight:600; font-size:14px; padding:12px 18px; border:1px solid var(--border); border-radius:6px; display:inline-flex; align-items:center; gap:8px; transition:border-color .15s, background .15s;}
+  .btn-ghost:hover{border-color:var(--terracotta); background:rgba(172,39,21,0.04);}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+
+  .section-eyebrow{ font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--terracotta); margin-bottom:12px; }
+  .section-title{font-size:30px; margin-bottom:14px; max-width:680px;}
+  .section-sub{font-size:16px; color:var(--gray-text); max-width:620px; margin-bottom:48px;}
+
+  /* ===== Hero produto ===== */
+  .prod-hero{ position:relative; background:var(--green-darker); overflow:hidden; min-height:640px; display:flex; align-items:center; }
+  .prod-hero video, .prod-hero img.poster{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .prod-hero .scrim{ position:absolute; inset:0; background:linear-gradient(100deg, rgba(30,58,46,0.95) 0%, rgba(30,58,46,0.88) 28%, rgba(30,58,46,0.45) 56%, rgba(30,58,46,0.08) 78%); }
+  .prod-hero-inner{ position:relative; z-index:2; width:100%; padding:80px clamp(24px, 6vw, 96px); }
+  .prod-hero-content{ max-width:560px; }
+  .prod-hero-eyebrow{ font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--sage); margin-bottom:18px; display:flex; align-items:center; gap:10px; }
+  .prod-hero-eyebrow::before{content:""; width:28px; height:2px; background:var(--sage); display:inline-block;}
+  .prod-hero h1{ font-size:46px; line-height:1.1; color:var(--white); margin-bottom:8px; }
+  .prod-hero .subname{ font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--green-accent-text); margin-bottom:22px; letter-spacing:.02em; }
+  .prod-hero p.sub{ font-size:17px; color:rgba(255,255,255,0.78); max-width:520px; margin-bottom:28px; }
+  .chip-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:32px;}
+  .chip{ background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); color:var(--white); font-family:'JetBrains Mono',monospace; font-size:12.5px; padding:8px 14px; border-radius:20px; }
+  .chip b{color:var(--green-accent-text); font-weight:600;}
+
+  /* ===== Stats bar ===== */
+  .stats-bar{ background:var(--green-darker); border-top:1px solid rgba(255,255,255,0.08); }
+  .stats-inner{ max-width:1180px; margin:0 auto; padding:0 32px; display:grid; grid-template-columns:repeat(4,1fr); }
+  .stat{ padding:30px 20px; text-align:center; border-right:1px solid rgba(255,255,255,0.08); }
+  .stat:last-child{border-right:none;}
+  .stat .num{font-family:'Inter',sans-serif; font-size:28px; font-weight:800; color:var(--white); font-variant-numeric:tabular-nums;}
+  .stat .label{font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px;}
+
+  /* ===== Como funciona / diagrama ===== */
+  .how-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+  .how-diagram{ background:var(--code-bg); border-radius:16px; padding:32px; }
+  .how-diagram svg{width:100%; height:auto; display:block;}
+  .how-callout{ background:var(--white); border:1px solid var(--border); border-left:3px solid var(--terracotta); border-radius:10px; padding:18px 20px; margin-top:24px; font-size:14px; color:var(--ink); }
+  .how-callout b{color:var(--terracotta-dark);}
+  .how-text h3{font-size:20px; margin-bottom:12px;}
+  .how-text p{color:var(--gray-text); font-size:15.5px; margin-bottom:18px;}
+  .auto-tuning-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px;}
+  .auto-tuning-card{background:var(--off-white); border:1px solid var(--border); border-radius:10px; padding:18px;}
+  .auto-tuning-card .t{font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:600; color:var(--terracotta); margin-bottom:4px;}
+  .auto-tuning-card .d{font-size:13px; color:var(--gray-text);}
+
+  /* ===== Diferenciais (pillars) ===== */
+  .pillars{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:#6E1710; border:1px solid #6E1710; border-radius:14px; overflow:hidden; }
+  .pillar{background:var(--terracotta-dark); color:var(--white); padding:32px 26px;}
+  .pillar .n{font-family:'JetBrains Mono',monospace; font-size:12px; color:rgba(255,255,255,0.55); margin-bottom:14px;}
+  .pillar h3{color:var(--white); font-size:17px; margin-bottom:10px;}
+  .pillar p{font-size:13.5px; color:rgba(255,255,255,0.75); line-height:1.55;}
+
+  /* ===== Galeria ===== */
+  .banner-hero{ border-radius:16px; overflow:hidden; margin-bottom:20px; }
+  .banner-hero img{width:100%; display:block;}
+  .banner-gallery{display:flex; flex-direction:column; gap:20px;}
+  .bg-row{display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:stretch;}
+  .bg-photo{ border-radius:14px; overflow:hidden; border:1px solid var(--border); background:var(--white); min-height:260px; }
+  .bg-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .bg-photo.studio img{object-fit:contain; padding:24px;}
+  .bg-caption{ display:flex; flex-direction:column; justify-content:center; padding:8px 4px; }
+  .bg-caption h3{font-size:20px; color:var(--green-darker); margin-bottom:14px; line-height:1.3;}
+  .bg-caption p{font-size:15.5px; color:var(--gray-text); line-height:1.6;}
+  .bg-caption p em{color:var(--ink); font-style:italic;}
+
+  /* ===== Ficha técnica ===== */
+  .spec-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px;}
+  .spec-tab{ font-size:13.5px; font-weight:600; padding:10px 18px; border-radius:8px; border:1px solid var(--border); color:var(--gray-text); cursor:pointer; background:var(--white); transition:all .15s; }
+  .spec-tab.active{background:var(--green-darker); border-color:var(--green-darker); color:var(--white);}
+  .spec-panel{display:none;}
+  .spec-panel.active{display:block;}
+  table.spec-table{width:100%; border-collapse:collapse; background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden;}
+  table.spec-table tr{border-top:1px solid var(--border);}
+  table.spec-table tr:first-child{border-top:none;}
+  table.spec-table td{padding:14px 20px; font-size:14.5px; vertical-align:top;}
+  table.spec-table td:first-child{color:var(--gray-text); width:38%; font-weight:500;}
+  table.spec-table td:last-child{font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--ink);}
+  .pin-table td:last-child{font-family:'IBM Plex Sans',sans-serif; font-size:14px;}
+  .spec-note{font-size:13px; color:var(--gray-text); margin-top:16px;}
+  .doc-links{display:flex; gap:12px; flex-wrap:wrap; margin-top:28px;}
+
+  /* ===== ROI calculator ===== */
+  .roi-section{background:var(--green-darker);}
+  .roi-section .section-eyebrow{color:var(--green-accent-text);}
+  .roi-section .section-title, .roi-section .section-sub{color:var(--white);}
+  .roi-section .section-sub{color:rgba(255,255,255,0.72);}
+  .roi-card{ background:var(--white); border-radius:16px; padding:40px; display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+  .roi-field{margin-bottom:22px;}
+  .roi-field label{display:block; font-size:13px; font-weight:600; color:var(--green-darker); margin-bottom:8px;}
+  .roi-field .row{display:flex; align-items:center; gap:12px;}
+  .roi-field input[type=range]{flex:1; accent-color:var(--terracotta);}
+  .roi-field .val{ font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:600; color:var(--terracotta); min-width:92px; text-align:right; }
+  .roi-result{ background:var(--off-white); border-radius:12px; padding:28px; display:flex; flex-direction:column; justify-content:center; }
+  .roi-result .big{font-family:'Inter',sans-serif; font-size:38px; font-weight:800; color:var(--terracotta-dark); font-variant-numeric:tabular-nums; line-height:1.1;}
+  .roi-result .label{font-size:13px; color:var(--gray-text); margin-top:4px; margin-bottom:20px;}
+  .roi-result .sub-metric{display:flex; justify-content:space-between; font-size:14px; padding:10px 0; border-top:1px solid var(--border);}
+  .roi-result .sub-metric b{font-family:'JetBrains Mono',monospace; color:var(--green-darker);}
+  .roi-disclaimer{font-size:11.5px; color:var(--gray-text); margin-top:16px; line-height:1.5;}
+
+  /* ===== Suporte ===== */
+  .support-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .support-card{background:var(--white); border:1px solid var(--border); border-radius:14px; padding:28px;}
+  .support-card .tag{font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--sage); margin-bottom:10px;}
+  .support-card .val{font-family:'JetBrains Mono',monospace; font-size:17px; color:var(--green-darker); margin-bottom:6px;}
+  .support-card p{font-size:13.5px; color:var(--gray-text);}
+
+  /* ===== Depoimentos ===== */
+  .testimonials-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .testimonial-card{background:var(--white); border:1px solid var(--border); border-radius:14px; padding:28px; display:flex; flex-direction:column;}
+  .testimonial-quote{font-size:15px; color:var(--ink); line-height:1.6; margin-bottom:20px; flex:1;}
+  .testimonial-quote::before{content:"“"; color:var(--terracotta); font-family:'Inter',sans-serif; font-weight:800; font-size:20px; margin-right:2px;}
+  .testimonial-author{border-top:1px solid var(--border); padding-top:14px;}
+  .testimonial-author .name{font-size:14px; font-weight:600; color:var(--green-darker);}
+  .testimonial-author .role{font-size:12.5px; color:var(--gray-text);}
+  .testimonials-note{font-size:12px; color:var(--gray-text); margin-top:18px; text-align:center;}
+
+  .final-cta{background:var(--green-darker); text-align:center;}
+  .final-cta .section-eyebrow{color:var(--green-accent-text);}
+  .final-cta h2{color:var(--white); font-size:28px; max-width:600px; margin:0 auto 16px;}
+  .final-cta p.sub{color:rgba(255,255,255,0.72); max-width:520px; margin:0 auto 32px;}
+
+  footer{ background:var(--green-darker); color:rgba(255,255,255,0.5); text-align:center; padding:28px 0; font-size:13px; border-top:1px solid rgba(255,255,255,0.08); }
+
+  @media (max-width: 860px){
+    .prod-hero h1{font-size:32px;}
+    .stats-inner{grid-template-columns:repeat(2,1fr);}
+    .stat{border-right:none; border-bottom:1px solid rgba(255,255,255,0.08);}
+    .how-grid{grid-template-columns:1fr;}
+    .auto-tuning-row{grid-template-columns:1fr;}
+    .pillars{grid-template-columns:repeat(2,1fr);}
+    .gallery-grid{grid-template-columns:repeat(2,1fr); grid-auto-rows:160px;}
+    .gallery-item.wide{grid-column:span 2;}
+    .roi-card{grid-template-columns:1fr;}
+    .support-grid{grid-template-columns:1fr;}
+    .testimonials-grid{grid-template-columns:1fr;}
+    nav{gap:16px;}
+    nav a:not(.nav-cta){display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <a href="index.html"><img src="assets/logo-sanick.png" alt="Sanick Equipamentos de Precisão"></a>
+      <span class="slogan">Conte com a Sanick</span>
+    </div>
+    <nav>
+      <a href="index.html" class="back-link">← Voltar ao site</a>
+      <a href="intelicount.html" class="active">Intelicount</a>
+      <a href="index.html#solucoes">Soluções</a>
+      <a href="institucional.html">Institucional</a>
+      <a href="index.html#blog">Blog</a>
+      <a href="index.html#contato" class="nav-cta">Fale com um especialista</a>
+    </nav>
+  </div>
+</header>
+
+<section class="prod-hero">
+  <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline="true" preload="auto" poster="assets/demo-capsulas-poster.jpg">
+    <source src="assets/demo-capsulas.mp4" type="video/mp4">
+  </video>
+  <button id="videoPlayFallback" style="display:none; position:absolute; inset:0; margin:auto; width:64px; height:64px; border-radius:50%; background:rgba(255,255,255,0.15); border:1.5px solid rgba(255,255,255,0.6); backdrop-filter:blur(4px); cursor:pointer; z-index:3; align-items:center; justify-content:center;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+  </button>
+  <div class="scrim"></div>
+  <div class="prod-hero-inner">
+    <div class="prod-hero-content">
+      <p class="prod-hero-eyebrow fade-in-up">Produto principal Sanick</p>
+      <h1 class="fade-in-up" style="animation-delay:.08s">Sanick Intelicount</h1>
+      <p class="subname fade-in-up" style="animation-delay:.14s">Sensor inteligente de contagem por infravermelho · IRDA</p>
+      <p class="sub fade-in-up" style="animation-delay:.2s">Contagem de peças por interrupção de plano infravermelho, com auto-tuning que adapta o sensor à luz do ambiente e ao tamanho da peça — sem parar sua produção para recalibrar.</p>
+      <div class="chip-row fade-in-up" style="animation-delay:.26s">
+        <div class="chip"><b>99,9%</b> de precisão</div>
+        <div class="chip"><b>6.000</b> peças/min</div>
+        <div class="chip"><b>60x</b> menor custo</div>
+        <div class="chip"><b>IP65</b></div>
+      </div>
+      <div class="cta-row fade-in-up" style="animation-delay:.32s">
+        <a href="#roi" class="btn-primary btn-white">Calcular economia com o Intelicount</a>
+        <a href="assets/sanick-intelicount-guia-rapido.pdf" class="btn-secondary" target="_blank">Baixar guia rápido (PDF)</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="num" data-target="99.9" data-decimals="1" data-suffix="%">0</div><div class="label">precisão validada</div></div>
+    <div class="stat"><div class="num" data-target="6000" data-suffix="">0</div><div class="label">peças/min (máx.)</div></div>
+    <div class="stat"><div class="num" data-target="30" data-suffix="s">0</div><div class="label">auto-tuning inicial</div></div>
+    <div class="stat"><div class="num" data-target="12" data-suffix=" meses">0</div><div class="label">de garantia</div></div>
+  </div>
+</div>
+
+<section id="como-funciona" class="reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Precisão visível</p>
+    <h2 class="section-title">Como o Intelicount conta cada peça.</h2>
+    <p class="section-sub">Um plano de luz infravermelha atravessa o furo central do sensor. Quando uma peça passa, ela interrompe o feixe — e essa interrupção vira um pulso digital, contado com exatidão.</p>
+
+    <div class="how-grid">
+      <div class="how-diagram">
+        <svg viewBox="0 0 520 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <style>
+              .lbl{font-family:'JetBrains Mono',monospace; font-size:11px; fill:#8FCDA8;}
+              .lbl-dim{font-family:'JetBrains Mono',monospace; font-size:10px; fill:#5B7A6A;}
+            </style>
+          </defs>
+          <!-- sensor ring cross-section -->
+          <circle cx="150" cy="90" r="58" fill="none" stroke="#3F5C4C" stroke-width="14"/>
+          <circle cx="150" cy="90" r="58" fill="none" stroke="#1E3A2E" stroke-width="14" stroke-dasharray="2 4" opacity="0.5"/>
+          <text x="150" y="94" text-anchor="middle" class="lbl-dim">Ø56mm</text>
+          <!-- IR beam line -->
+          <line id="beam" x1="92" y1="90" x2="208" y2="90" stroke="#8FCDA8" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="150" y="60" text-anchor="middle" class="lbl">janela IR · 2mm</text>
+
+          <!-- falling piece -->
+          <circle id="piece" cx="150" cy="10" r="7" fill="#AC2715"/>
+
+          <!-- pulse waveform axis -->
+          <line x1="40" y1="230" x2="480" y2="230" stroke="#3F5C4C" stroke-width="1"/>
+          <text x="40" y="250" class="lbl-dim">t</text>
+          <text x="20" y="180" class="lbl-dim">saída</text>
+          <path id="pulse" d="M40,230 L480,230" fill="none" stroke="#8FCDA8" stroke-width="2"/>
+
+          <!-- counter -->
+          <text id="counterText" x="440" y="90" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="26" font-weight="600" fill="#FFFFFF">000</text>
+          <text x="440" y="112" text-anchor="middle" class="lbl-dim">contagem</text>
+        </svg>
+      </div>
+      <div class="how-text">
+        <h3>Interrupção de feixe → pulso digital</h3>
+        <p>Emissores e receptores infravermelhos internos ao furo central formam um plano de luz. Ao atravessá-lo, a peça interrompe o feixe e gera um pulso no Pino 4 do conector M12 — cuja largura é proporcional ao tempo de passagem pela janela de detecção de 2mm.</p>
+        <p>Isso permite não só contar, mas também estimar velocidade e diferenciar peças pelo tempo de interrupção — útil em linhas com múltiplos tamanhos de componente.</p>
+        <div class="how-callout">
+          <b>Exemplo real:</b> uma semente de soja em queda livre gera um pulso de aproximadamente <b>6 ms</b> — tempo suficiente para uma contagem exata mesmo em alta velocidade.
+        </div>
+      </div>
+    </div>
+
+    <div class="auto-tuning-row">
+      <div class="auto-tuning-card">
+        <div class="t">~30s</div>
+        <div class="d"><b>Auto-tuning de inicialização.</b> Ao ligar, o sensor se adapta à iluminação do ambiente. O furo deve ficar desobstruído e o sensor imóvel durante esse tempo.</div>
+      </div>
+      <div class="auto-tuning-card">
+        <div class="t">~4s</div>
+        <div class="d"><b>Auto-tuning de seleção de tamanho.</b> Ao alternar entre peça pequena/grande (Pino 2), o sensor recalibra a sensibilidade automaticamente.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--white); border-top:1px solid var(--border); border-bottom:1px solid var(--border);" class="reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Diferenciais</p>
+    <h2 class="section-title">Por que o Intelicount, e não outro sensor.</h2>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="n">01</div>
+        <h3>Preço disruptivo</h3>
+        <p>60x menor custo que alternativas internacionais de mesma categoria — sem abrir mão de precisão industrial.</p>
+      </div>
+      <div class="pillar">
+        <div class="n">02</div>
+        <h3>Calibração adaptativa</h3>
+        <p>Auto-tuning à iluminação ambiente e ao tamanho da peça. Recalibra sozinho — sua produção não para.</p>
+      </div>
+      <div class="pillar">
+        <div class="n">03</div>
+        <h3>Precisão real</h3>
+        <p>99,9% de exatidão validada em unidades operacionais reais, em múltiplos segmentos industriais.</p>
+      </div>
+      <div class="pillar">
+        <div class="n">04</div>
+        <h3>Relacionamento</h3>
+        <p>Suporte técnico com resposta em até 24h. Fale direto com quem desenvolveu o sensor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Galeria</p>
+    <h2 class="section-title">O sensor, por dentro e em operação.</h2>
+    <p class="section-sub">Corpo em PEAD preto, conector M12 lateral, 115mm de diâmetro externo — validado em linhas farmacêuticas, de parafusos e de sementes.</p>
+    <div class="banner-hero">
+      <img src="assets/banner-solucao-contagem.jpg" alt="Sanick Intelicount — solução em contagem em todos os setores">
+    </div>
+    <div class="banner-gallery">
+      <div class="bg-row">
+        <div class="bg-photo"><img src="assets/product-line.jpg" alt="Sensores Intelicount instalados em linha de produção"></div>
+        <div class="bg-photo studio"><img src="assets/product-angled.jpg" alt="Sanick Intelicount, vista em ângulo"></div>
+      </div>
+      <div class="bg-row">
+        <div class="bg-caption">
+          <h3>Validado em 6 segmentos industriais.</h3>
+          <p>Do agronegócio ao farmacêutico, o Intelicount já roda em linhas reais, <em>sem parar para recalibrar</em>.</p>
+        </div>
+        <div class="bg-photo"><img src="assets/product-pharma.jpg" alt="Técnico validando contagem de cápsulas farmacêuticas com o Intelicount"></div>
+      </div>
+      <div class="bg-row">
+        <div class="bg-photo studio"><img src="assets/product-top.jpg" alt="Sanick Intelicount, vista superior do furo central"></div>
+        <div class="bg-photo studio"><img src="assets/product-front.jpg" alt="Sanick Intelicount, vista frontal"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ficha-tecnica" style="background:var(--white); border-top:1px solid var(--border);" class="reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Ficha técnica</p>
+    <h2 class="section-title">Especificações completas para integração.</h2>
+    <p class="section-sub">Tudo que sua equipe de automação precisa para instalar, conectar e validar o Intelicount em uma linha existente.</p>
+
+    <div class="spec-tabs">
+      <div class="spec-tab active" data-tab="eletrica">Elétrica &amp; saída</div>
+      <div class="spec-tab" data-tab="mecanica">Dimensões &amp; fixação</div>
+      <div class="spec-tab" data-tab="pinagem">Pinagem M12</div>
+      <div class="spec-tab" data-tab="ambiente">Condições ambientais</div>
+    </div>
+
+    <div class="spec-panel active" data-panel="eletrica">
+      <table class="spec-table">
+        <tr><td>Tipo de sensor</td><td>Digital, contagem por infravermelho (IRDA)</td></tr>
+        <tr><td>Tensão de alimentação</td><td>24 VDC</td></tr>
+        <tr><td>Consumo de corrente</td><td>&lt; 60 mA @ 24VDC</td></tr>
+        <tr><td>Tipo de saída</td><td>Digital, pulso ON/OFF — push-pull</td></tr>
+        <tr><td>Corrente máx. de saída</td><td>160 mA</td></tr>
+        <tr><td>Janela de detecção interna</td><td>2 mm (largura do plano infravermelho)</td></tr>
+        <tr><td>Largura do pulso de saída</td><td>Proporcional ao tempo de interrupção do feixe (ex: semente de soja em queda livre ≈ 6ms)</td></tr>
+        <tr><td>Velocidade máx. de contagem</td><td>6.000 peças/min</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-panel" data-panel="mecanica">
+      <table class="spec-table">
+        <tr><td>Corpo do sensor</td><td>PEAD (Polietileno de Alta Densidade), cor preta</td></tr>
+        <tr><td>Diâmetro externo</td><td>115 mm</td></tr>
+        <tr><td>Diâmetro interno (furo)</td><td>56 mm</td></tr>
+        <tr><td>Altura (espessura)</td><td>48 mm</td></tr>
+        <tr><td>Pontos de fixação</td><td>3 insertos de 5mm na parte inferior — parafusos M5</td></tr>
+        <tr><td>Orientação de montagem</td><td>Qualquer orientação (horizontal ou vertical)</td></tr>
+        <tr><td>Conector</td><td>M12, 4 pinos (macho), lateral</td></tr>
+      </table>
+    </div>
+
+    <div class="spec-panel" data-panel="pinagem">
+      <table class="spec-table pin-table">
+        <tr><td>Pino 1</td><td>+24 VDC (alimentação positiva)</td></tr>
+        <tr><td>Pino 2</td><td>Entrada — seleção de tamanho de peça (peça pequena: +24VDC · peça grande: 0VDC)</td></tr>
+        <tr><td>Pino 3</td><td>0 VDC (GND — alimentação negativa)</td></tr>
+        <tr><td>Pino 4</td><td>Saída — pulso digital de contagem (push-pull)</td></tr>
+      </table>
+      <p class="spec-note">A cada alteração na conexão do Pino 2, o sensor executa uma nova rotina de auto-tuning (~4s), suspendendo a contagem durante esse período.</p>
+    </div>
+
+    <div class="spec-panel" data-panel="ambiente">
+      <table class="spec-table">
+        <tr><td>Temperatura de operação</td><td>−25°C a +55°C</td></tr>
+        <tr><td>Temperatura de armazenamento</td><td>−40°C a +70°C</td></tr>
+        <tr><td>Umidade relativa</td><td>35% a 85% UR, sem condensação</td></tr>
+        <tr><td>Grau de proteção</td><td>IP65</td></tr>
+        <tr><td>Tempo de inicialização (auto-tuning)</td><td>≈ 30 segundos</td></tr>
+        <tr><td>Tempo de adaptação (seleção de tamanho)</td><td>≈ 4 segundos</td></tr>
+        <tr><td>Garantia</td><td>12 meses contra defeitos de fabricação</td></tr>
+      </table>
+    </div>
+
+    <div class="doc-links">
+      <a href="assets/sanick-intelicount-guia-rapido.pdf" class="btn-ghost" target="_blank">↓ Guia rápido de instalação (PDF)</a>
+      <a href="assets/sanick-intelicount-manual.pdf" class="btn-ghost" target="_blank">↓ Manual completo do usuário (PDF)</a>
+    </div>
+  </div>
+</section>
+
+<section id="roi" class="roi-section reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Calculadora de ROI</p>
+    <h2 class="section-title">Quanto sua linha perde com contagem imprecisa?</h2>
+    <p class="section-sub">Estime, com seus próprios números, o impacto financeiro de trocar a contagem manual ou por célula de carga pelo Sanick Intelicount.</p>
+
+    <div class="roi-card">
+      <div>
+        <div class="roi-field">
+          <label>Peças contadas por mês</label>
+          <div class="row">
+            <input type="range" id="roiVolume" min="10000" max="5000000" step="10000" value="500000">
+            <div class="val mono" id="roiVolumeVal">500.000</div>
+          </div>
+        </div>
+        <div class="roi-field">
+          <label>Taxa de erro atual na contagem</label>
+          <div class="row">
+            <input type="range" id="roiErro" min="0.1" max="10" step="0.1" value="2">
+            <div class="val mono" id="roiErroVal">2,0%</div>
+          </div>
+        </div>
+        <div class="roi-field">
+          <label>Custo médio por peça (R$)</label>
+          <div class="row">
+            <input type="range" id="roiCusto" min="0.05" max="20" step="0.05" value="1.50">
+            <div class="val mono" id="roiCustoVal">R$ 1,50</div>
+          </div>
+        </div>
+      </div>
+      <div class="roi-result">
+        <div class="big mono" id="roiEconomiaMensal">R$ 0</div>
+        <div class="label">economia estimada por mês, ao eliminar o erro de contagem</div>
+        <div class="sub-metric"><span>Economia anual estimada</span><b class="mono" id="roiEconomiaAnual">R$ 0</b></div>
+        <div class="sub-metric"><span>Custo do Intelicount</span><b class="mono">R$ 2.400 / unidade</b></div>
+        <div class="sub-metric"><span>Payback estimado</span><b class="mono" id="roiPayback">—</b></div>
+        <p class="roi-disclaimer">Estimativa ilustrativa baseada nos valores informados acima. Não considera custos de instalação, integração ou variações operacionais específicas da sua linha. Fale com nosso time para um cálculo detalhado da sua aplicação.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Suporte técnico</p>
+    <h2 class="section-title">Antes, durante e depois da instalação.</h2>
+    <div class="support-grid">
+      <div class="support-card">
+        <p class="tag">Telefone</p>
+        <p class="val">+55 49 3323-4640</p>
+        <p>Suporte técnico direto, sem central de atendimento automatizada.</p>
+      </div>
+      <div class="support-card">
+        <p class="tag">WhatsApp</p>
+        <p class="val">+55 49 9922-4604</p>
+        <p>Resposta em até 24h para dúvidas de instalação, integração e troubleshooting.</p>
+      </div>
+      <div class="support-card">
+        <p class="tag">E-mail técnico</p>
+        <p class="val" style="font-size:15px;">tecnico@sanick.com.br</p>
+        <p>Para solicitações de reparo, garantia e documentação adicional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">O que dizem sobre o Intelicount</p>
+    <h2 class="section-title">Depoimentos de quem já usa.</h2>
+    <p class="section-sub">Exemplos ilustrativos do tipo de retorno que buscamos — em breve substituídos por depoimentos reais de clientes.</p>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <p class="testimonial-quote">Trocamos a contagem manual pelo Intelicount e os apontamentos de divergência de estoque praticamente zeraram. A equipe confia no número sem precisar conferir de novo.</p>
+        <div class="testimonial-author">
+          <div class="name">Marcos R.</div>
+          <div class="role">Gerente de Qualidade — indústria farmacêutica</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-quote">O que mais pesou pra gente foi não precisar parar a linha pra recalibrar toda vez que mudava o lote. O auto-tuning resolve isso sozinho.</p>
+        <div class="testimonial-author">
+          <div class="name">Camila S.</div>
+          <div class="role">Supervisora de Produção — autopeças</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-quote">Tivemos uma dúvida na instalação e o suporte técnico respondeu ainda no mesmo dia, direto pelo WhatsApp. Isso conta muito quando a linha não pode parar.</p>
+        <div class="testimonial-author">
+          <div class="name">Eduardo T.</div>
+          <div class="role">Coordenador de Manutenção — agroindústria</div>
+        </div>
+      </div>
+    </div>
+    <p class="testimonials-note">* Depoimentos ilustrativos, criados para demonstrar o formato da seção — a substituir por depoimentos reais de clientes Sanick.</p>
+  </div>
+</section>
+
+<section class="final-cta reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Conte com a Sanick</p>
+    <h2>Pronto para eliminar o erro de contagem da sua linha?</h2>
+    <p class="sub">Fale com nosso time técnico e veja o Intelicount funcionando com as peças da sua própria produção.</p>
+    <a class="btn-primary" href="index.html#contato">Fale com um especialista</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Sanick Equipamentos de Precisão — Chapecó/SC, Brasil · Conte com a Sanick.</div>
+</footer>
+
+<script>
+// Forçar reprodução do vídeo de fundo (autoplay pode ser bloqueado pelo navegador)
+(function(){
+  const video = document.getElementById('heroVideo');
+  const fallbackBtn = document.getElementById('videoPlayFallback');
+  if(!video) return;
+  video.muted = true;
+  const tryPlay = () => {
+    const p = video.play();
+    if(p !== undefined){
+      p.catch(() => {
+        if(fallbackBtn) fallbackBtn.style.display = 'flex';
+      });
+    }
+  };
+  tryPlay();
+  document.addEventListener('DOMContentLoaded', tryPlay);
+  if(fallbackBtn){
+    fallbackBtn.addEventListener('click', () => {
+      video.play();
+      fallbackBtn.style.display = 'none';
+    });
+  }
+})();
+
+function animateCounter(el){
+  const target = parseFloat(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const decimals = parseInt(el.dataset.decimals || '0');
+  const duration = 1400;
+  const start = performance.now();
+  function tick(now){
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = target * eased;
+    el.textContent = value.toLocaleString('pt-BR', {minimumFractionDigits:decimals, maximumFractionDigits:decimals}) + suffix;
+    if(progress < 1){ requestAnimationFrame(tick); }
+    else { el.textContent = target.toLocaleString('pt-BR', {minimumFractionDigits:decimals, maximumFractionDigits:decimals}) + suffix; }
+  }
+  requestAnimationFrame(tick);
+}
+const statObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.querySelectorAll('.num[data-target]').forEach(animateCounter);
+      statObserver.unobserve(entry.target);
+    }
+  });
+}, {threshold:0.4});
+const statsBarEl = document.querySelector('.stats-bar');
+if(statsBarEl){ statObserver.observe(statsBarEl); }
+
+// Reveal on scroll
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, {threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+// Diagrama "como funciona": animação em loop do feixe sendo interrompido
+(function(){
+  const piece = document.getElementById('piece');
+  const beam = document.getElementById('beam');
+  const pulse = document.getElementById('pulse');
+  const counterText = document.getElementById('counterText');
+  let count = 0;
+  function runCycle(){
+    if(!piece) return;
+    let start = null;
+    const fallDuration = 900;
+    function animateFall(ts){
+      if(!start) start = ts;
+      const elapsed = ts - start;
+      const progress = Math.min(elapsed / fallDuration, 1);
+      const y = 10 + progress * 200;
+      piece.setAttribute('cy', y.toFixed(1));
+
+      // beam interruption window: piece crosses y ~= 90 (beam height)
+      const crossing = (y > 78 && y < 102);
+      beam.setAttribute('stroke', crossing ? '#AC2715' : '#8FCDA8');
+      beam.setAttribute('stroke-width', crossing ? '4' : '2');
+
+      // pulse waveform: draw square pulse synced to crossing
+      let d = 'M40,230 ';
+      const beamStartX = 40 + (progress > 0.30 ? Math.min((progress-0.30)/0.16,1) * 0 : 0);
+      if(crossing){
+        d += 'L280,230 L280,190 L320,190 L320,230 L480,230';
+        counterText.textContent = String(count+1).padStart(3,'0');
+      } else if(progress >= 1){
+        d += 'L480,230';
+      } else {
+        d += 'L480,230';
+      }
+      pulse.setAttribute('d', d);
+
+      if(progress < 1){
+        requestAnimationFrame(animateFall);
+      } else {
+        count++;
+        setTimeout(()=>{ piece.setAttribute('cy', 10); beam.setAttribute('stroke','#8FCDA8'); beam.setAttribute('stroke-width','2'); pulse.setAttribute('d','M40,230 L480,230'); runCycle(); }, 500);
+      }
+    }
+    requestAnimationFrame(animateFall);
+  }
+  runCycle();
+})();
+
+// Calculadora de ROI
+(function(){
+  const volume = document.getElementById('roiVolume');
+  const erro = document.getElementById('roiErro');
+  const custo = document.getElementById('roiCusto');
+  const volVal = document.getElementById('roiVolumeVal');
+  const erroVal = document.getElementById('roiErroVal');
+  const custoVal = document.getElementById('roiCustoVal');
+  const mensal = document.getElementById('roiEconomiaMensal');
+  const anual = document.getElementById('roiEconomiaAnual');
+  const payback = document.getElementById('roiPayback');
+  const PRECO_SENSOR = 2400;
+
+  function fmtBRL(v){
+    return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL', maximumFractionDigits:0});
+  }
+  function update(){
+    const v = parseFloat(volume.value);
+    const e = parseFloat(erro.value);
+    const c = parseFloat(custo.value);
+
+    volVal.textContent = v.toLocaleString('pt-BR');
+    erroVal.textContent = e.toLocaleString('pt-BR',{minimumFractionDigits:1}) + '%';
+    custoVal.textContent = 'R$ ' + c.toLocaleString('pt-BR',{minimumFractionDigits:2});
+
+    const economiaMensal = v * (e/100) * c;
+    const economiaAnual = economiaMensal * 12;
+
+    mensal.textContent = fmtBRL(economiaMensal);
+    anual.textContent = fmtBRL(economiaAnual);
+
+    if(economiaMensal > 0){
+      const meses = PRECO_SENSOR / economiaMensal;
+      if(meses < 1){
+        payback.textContent = 'menos de 1 mês';
+      } else {
+        payback.textContent = meses.toLocaleString('pt-BR',{maximumFractionDigits:1}) + ' meses';
+      }
+    } else {
+      payback.textContent = '—';
+    }
+  }
+  [volume, erro, custo].forEach(el => el.addEventListener('input', update));
+  update();
+})();
+
+// Tabs da ficha técnica
+document.querySelectorAll('.spec-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.spec-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.spec-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`.spec-panel[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>

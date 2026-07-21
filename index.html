@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanick — Conte com a Sanick</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --terracotta:#AC2715;
+    --terracotta-dark:#8A1F11;
+    --green-dark:#2F5643;
+    --green-darker:#1E3A2E;
+    --sage:#7F998F;
+    --green-accent-text:#8FCDA8;
+    --green-btn:#3F7A57;
+    --green-btn-dark:#2F5C41;
+    --surface:#D9DAD9;
+    --ink:#242422;
+    --gray-text:#5B6560;
+    --white:#FFFFFF;
+    --off-white:#FAFAF9;
+    --border:rgba(36,36,34,0.10);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+
+  .ticker{ background:var(--green-darker); overflow:hidden; white-space:nowrap; padding:9px 0; }
+  .ticker-track{ display:inline-flex; width:max-content; animation:tickerScroll 26s linear infinite; }
+  .ticker-track span{ font-size:11.5px; font-weight:600; letter-spacing:.08em; color:rgba(255,255,255,0.82); text-transform:uppercase; padding:0 16px; }
+  .ticker-track .dot{ color:var(--green-accent-text); padding:0; }
+  @keyframes tickerScroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  @keyframes fadeInUp{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
+  .fade-in-up{ opacity:0; animation:fadeInUp .8s ease forwards; }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+  body{
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--ink);
+    background:var(--off-white);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Inter', sans-serif;
+    font-weight:700;
+    letter-spacing:-0.02em;
+    color:var(--green-darker);
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+  button{font-family:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,250,249,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .header-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 32px; max-width:1180px; margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:14px;}
+  .brand img{height:52px; width:auto;}
+  .brand .slogan{
+    font-family:'Inter',sans-serif; font-size:12px; font-weight:500;
+    color:var(--gray-text); letter-spacing:0.02em; font-style:italic;
+    border-left:1px solid var(--border); padding-left:14px;
+  }
+  nav{display:flex; gap:32px; align-items:center;}
+  nav a{font-size:14px; font-weight:500; color:var(--green-darker); transition:color .15s;}
+  nav a:hover{color:var(--terracotta);}
+  .nav-cta{
+    background:var(--terracotta); color:var(--white) !important;
+    padding:10px 20px; border-radius:6px; font-weight:600;
+  }
+  .nav-cta:hover{background:var(--terracotta-dark); color:var(--white) !important;}
+
+  .hero{
+    position:relative;
+    min-height:640px;
+    display:flex; align-items:flex-end;
+    overflow:hidden;
+    color:var(--white);
+  }
+  .hero-bg{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:65% 30%;
+    opacity:0; transition:opacity 1.4s ease;
+  }
+  .hero-bg.hero-bg-active{ opacity:1; }
+  .hero-scrim{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(36,42,38,0.35) 0%, rgba(20,28,24,0.55) 55%, rgba(15,24,20,0.88) 100%);
+  }
+  .hero-content{
+    position:relative; z-index:2; width:100%;
+    max-width:1180px; margin:0 auto; padding:64px 32px 56px;
+  }
+  .hero-eyebrow{
+    font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--white); margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .hero-eyebrow::before{content:""; width:28px; height:2px; background:var(--white); display:inline-block;}
+  .hero h1{
+    font-size:46px; line-height:1.12; color:var(--white); margin-bottom:20px; max-width:760px;
+  }
+  .hero h1 .accent{color:var(--green-accent-text);}
+  .hero p.sub{
+    font-size:17px; color:rgba(255,255,255,0.82); max-width:480px; margin-bottom:32px;
+  }
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--green-btn); color:var(--white); font-weight:700; font-size:15px;
+    padding:15px 28px; border-radius:6px; border:none; cursor:pointer;
+    transition:transform .15s, box-shadow .15s, background .15s;
+  }
+  .btn-primary:hover{background:var(--green-btn-dark); transform:translateY(-2px); box-shadow:0 8px 20px rgba(47,86,67,0.35);}
+  .btn-secondary{
+    color:var(--white); font-weight:600; font-size:15px; padding:15px 20px;
+    border:1px solid rgba(255,255,255,0.35); border-radius:6px;
+    transition:border-color .15s, background .15s;
+  }
+  .btn-secondary:hover{border-color:var(--white); background:rgba(255,255,255,0.10);}
+
+  .hero-segment-tag{
+    position:absolute; top:24px; right:32px; z-index:2;
+    background:rgba(250,250,249,0.14); backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,0.25); border-radius:8px;
+    padding:9px 16px; font-size:12px; font-weight:600; color:var(--white);
+  }
+  .hero-segment-tag span{color:var(--sage); text-transform:uppercase; letter-spacing:.06em; font-size:10px; display:block; margin-bottom:2px;}
+
+  .stats-bar{ background:var(--green-darker); }
+  .stats-inner{
+    max-width:1180px; margin:0 auto; padding:0 32px;
+    display:grid; grid-template-columns:repeat(3,1fr);
+  }
+  .stat{ padding:26px 20px; text-align:center; border-right:1px solid rgba(255,255,255,0.08); }
+  .stat:last-child{border-right:none;}
+  .stat .num{font-family:'Inter',sans-serif; font-size:30px; font-weight:800; color:var(--white); font-variant-numeric:tabular-nums;}
+  .stat .label{font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px;}
+
+  section{padding:88px 0;}
+  .section-eyebrow{
+    font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--terracotta); margin-bottom:12px;
+  }
+  .section-title{font-size:30px; margin-bottom:14px; max-width:640px;}
+  .section-sub{font-size:16px; color:var(--gray-text); max-width:560px; margin-bottom:48px;}
+
+  .pillars{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:#6E1710; border:1px solid #6E1710; border-radius:14px; overflow:hidden;
+  }
+  .pillar{background:var(--terracotta-dark); padding:32px 26px;}
+  .pillar .icon{
+    width:44px; height:44px; border-radius:10px; background:rgba(255,255,255,0.14);
+    display:flex; align-items:center; justify-content:center; margin-bottom:20px;
+  }
+  .pillar .icon svg{width:22px; height:22px; stroke:var(--white);}
+  .pillar h3{font-size:17px; margin-bottom:8px; color:var(--white);}
+  .pillar p{font-size:14px; color:rgba(255,255,255,0.78); line-height:1.5;}
+
+  .teaser-card{
+    display:grid; grid-template-columns:0.85fr 1.15fr;
+    background:var(--green-darker); border-radius:18px; overflow:hidden; align-items:stretch;
+  }
+  .teaser-media{position:relative; min-height:340px;}
+  .teaser-media img{width:100%; height:100%; object-fit:cover;}
+  .teaser-content{padding:48px 52px; display:flex; flex-direction:column; justify-content:center;}
+  .teaser-eyebrow{ font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--sage); margin-bottom:14px; }
+  .teaser-content h3{color:var(--white); font-size:28px; margin-bottom:14px;}
+  .teaser-content p{color:rgba(255,255,255,0.72); font-size:15px; margin-bottom:26px; max-width:420px;}
+  .teaser-specs{display:flex; gap:28px; margin-bottom:30px;}
+  .teaser-specs .n{font-size:22px; font-weight:800; color:var(--white); font-variant-numeric:tabular-nums; font-family:'Inter',sans-serif;}
+  .teaser-specs .l{font-size:11px; color:rgba(255,255,255,0.55);}
+  .teaser-link{
+    color:var(--white); font-weight:600; font-size:14px; display:inline-flex; align-items:center; gap:8px;
+    border-bottom:1px solid var(--terracotta); padding-bottom:2px; width:fit-content;
+  }
+
+  .proof{background:var(--white); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:44px 0;}
+  .proof-label{font-size:12px; color:var(--gray-text); text-transform:uppercase; letter-spacing:.06em; margin-bottom:26px; text-align:center;}
+  .proof-logos{display:flex; align-items:center; justify-content:center; gap:64px; flex-wrap:wrap;}
+  .proof-logos img{height:34px; width:auto; object-fit:contain; filter:grayscale(1); opacity:0.55; transition:opacity .15s, filter .15s;}
+  .proof-logos img:hover{filter:grayscale(0); opacity:1;}
+  .proof-more{font-size:13px; color:var(--sage); font-style:italic;}
+
+  /* Soluções por setor */
+  .solutions-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .solution-card{
+    position:relative; border-radius:14px; overflow:hidden; aspect-ratio:4/5;
+    background-size:cover; background-position:center;
+    background-color:var(--green-darker);
+    display:flex; align-items:flex-end;
+  }
+  .solution-card::before{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(20,30,25,0.10) 0%, rgba(15,24,20,0.90) 88%);
+  }
+  .solution-icon{
+    position:absolute; top:18px; left:18px; z-index:2;
+    width:36px; height:36px; border-radius:9px; background:rgba(255,255,255,0.12);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .solution-icon svg{width:18px; height:18px; stroke:var(--white);}
+  .solution-overlay{ position:relative; z-index:2; padding:20px; width:100%; }
+  .solution-overlay h3{ color:var(--white); font-size:17px; margin-bottom:4px; font-family:'Inter',sans-serif;}
+  .solution-examples{ color:rgba(255,255,255,0.62); font-size:12.5px; margin-bottom:14px; line-height:1.4; }
+  .solution-btn{
+    display:inline-flex; align-items:center; gap:6px; background:var(--white); color:var(--green-darker); font-size:12px; font-weight:700;
+    padding:9px 16px; border-radius:6px; transition:background .15s, transform .15s;
+  }
+  .solution-btn:hover{ background:var(--off-white); transform:translateX(2px); }
+
+  .final-cta{background:var(--green-darker); color:var(--white); text-align:center;}
+  .final-cta .section-eyebrow{color:var(--sage);}
+  .final-cta h2{color:var(--white); font-size:32px; max-width:600px; margin:0 auto 16px;}
+  .final-cta p.sub{color:rgba(255,255,255,0.65); max-width:520px; margin:0 auto 44px; font-size:16px;}
+
+  .quiz-card{
+    max-width:620px; margin:0 auto; background:var(--white); border-radius:16px; padding:40px 44px 36px;
+    text-align:left; color:var(--ink); box-shadow:0 20px 60px rgba(0,0,0,0.25);
+  }
+  .quiz-progress{ display:flex; gap:6px; margin-bottom:28px; }
+  .quiz-progress .seg{ height:4px; flex:1; background:var(--border); border-radius:2px; overflow:hidden; }
+  .quiz-progress .seg i{ display:block; height:100%; width:0%; background:var(--terracotta); transition:width .25s; }
+  .quiz-progress .seg.done i{width:100%;}
+  .quiz-progress .seg.current i{width:100%;}
+  .quiz-step-label{ font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--sage); margin-bottom:10px;}
+  .quiz-question{ font-size:21px; font-weight:700; color:var(--green-darker); margin-bottom:22px; font-family:'Inter',sans-serif; letter-spacing:-0.01em; }
+  .quiz-options{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .quiz-options.single-col{ grid-template-columns:1fr; }
+  .quiz-option{
+    text-align:left; padding:16px 18px; border:1.5px solid var(--border); border-radius:10px;
+    background:var(--off-white); font-size:14px; font-weight:500; color:var(--ink); cursor:pointer;
+    transition:border-color .15s, background .15s, transform .1s;
+  }
+  .quiz-option:hover{border-color:var(--terracotta); background:#fff;}
+  .quiz-option.selected{border-color:var(--terracotta); background:rgba(172,39,21,0.06); color:var(--terracotta-dark);}
+  .quiz-input{
+    width:100%; padding:14px 16px; border:1.5px solid var(--border); border-radius:10px;
+    font-size:14px; font-family:inherit; margin-bottom:16px; background:var(--off-white);
+  }
+  .quiz-input:focus{outline:none; border-color:var(--terracotta);}
+  .quiz-nav{ display:flex; justify-content:space-between; align-items:center; margin-top:24px; }
+  .quiz-back{ font-size:13px; color:var(--gray-text); cursor:pointer; font-weight:500; }
+  .quiz-back:hover{color:var(--terracotta);}
+  .quiz-continue{
+    background:var(--terracotta); color:var(--white); border:none; padding:12px 24px; border-radius:8px;
+    font-weight:600; font-size:14px; cursor:pointer; transition:background .15s;
+  }
+  .quiz-continue:hover{background:var(--terracotta-dark);}
+  .quiz-done{ text-align:center; padding:20px 0; }
+  .quiz-done .check{
+    width:56px; height:56px; border-radius:50%; background:rgba(172,39,21,0.08); color:var(--terracotta);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:26px;
+  }
+  .quiz-done h3{font-size:20px; margin-bottom:8px;}
+  .quiz-done p{font-size:14px; color:var(--gray-text);}
+  .quiz-contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+
+  .whatsapp-cta{
+    display:inline-flex; align-items:center; gap:10px; margin-top:28px;
+    color:rgba(255,255,255,0.85); font-size:14px; font-weight:600;
+    padding:13px 22px; border:1px solid rgba(255,255,255,0.25); border-radius:8px;
+    transition:border-color .15s, background .15s, color .15s;
+  }
+  .whatsapp-cta:hover{border-color:#25D366; background:rgba(37,211,102,0.10); color:var(--white);}
+  .whatsapp-cta svg{width:20px; height:20px; fill:#25D366; flex-shrink:0;}
+
+  /* ===== Quem lidera (fundadores) ===== */
+  .founders{background:var(--white); border-top:1px solid var(--border);}
+  .founders-media{border-radius:16px; overflow:hidden; margin-bottom:40px;}
+  .founders-media img{width:100%; object-position:center 20%; max-height:480px; object-fit:cover;}
+  .founders-grid{display:grid; grid-template-columns:1fr 1fr; gap:40px;}
+  .founder-card .name{font-family:'Inter',sans-serif; font-weight:700; font-size:20px; color:var(--green-darker); margin-bottom:2px; letter-spacing:-0.01em;}
+  .founder-card .role{font-size:13px; font-weight:600; color:var(--terracotta); text-transform:uppercase; letter-spacing:.05em; margin-bottom:14px;}
+  .founder-card p{font-size:15px; color:var(--gray-text); line-height:1.6;}
+
+  /* ===== Essência da marca ===== */
+  .brand-block{
+    position:relative; min-height:380px; display:flex; align-items:center;
+    background:var(--green-darker); overflow:hidden; padding:0;
+  }
+  .brand-block img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.9;}
+  .brand-block .scrim{position:absolute; inset:0; background:linear-gradient(90deg, rgba(30,58,46,0.92) 0%, rgba(30,58,46,0.55) 55%, rgba(30,58,46,0.15) 100%);}
+  .brand-block-content{position:relative; z-index:2; max-width:480px; padding:64px 32px;}
+  .brand-block-content .section-eyebrow{color:var(--green-accent-text);}
+  .brand-block-content h2{color:var(--white); font-size:28px; margin-bottom:14px; font-family:'Inter',sans-serif; font-weight:700; letter-spacing:-0.02em;}
+  .brand-block-content p{color:rgba(255,255,255,0.75); font-size:15px;}
+
+  @media (max-width: 860px){
+    .founders-grid{grid-template-columns:1fr;}
+  }
+
+  footer{
+    background:var(--green-darker); color:rgba(255,255,255,0.5); text-align:center;
+    padding:32px; font-size:13px;
+  }
+
+  @media (max-width: 860px){
+    .hero{min-height:560px;}
+    .hero h1{font-size:32px;}
+    .hero-segment-tag{display:none;}
+    .stats-inner{grid-template-columns:1fr;}
+    .stat{border-right:none; border-bottom:1px solid rgba(255,255,255,0.08);}
+    .pillars{grid-template-columns:1fr 1fr;}
+    .solutions-grid{grid-template-columns:1fr 1fr;}
+    .teaser-card{grid-template-columns:1fr;}
+    .teaser-media{min-height:220px;}
+    nav{display:none;}
+    .proof-logos{gap:32px;}
+    .quiz-card{padding:28px 22px;}
+    .quiz-options{grid-template-columns:1fr;}
+    .quiz-contact-grid{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span>20 ANOS DE EMPRESA</span><span class="dot">•</span>
+    <span>ALGORITMOS PROPRIETÁRIOS DE IA</span><span class="dot">•</span>
+    <span>99,9% DE PRECISÃO</span><span class="dot">•</span>
+    <span>CLIENTES EM 3 CONTINENTES</span><span class="dot">•</span>
+    <span>20 ANOS DE EMPRESA</span><span class="dot">•</span>
+    <span>ALGORITMOS PROPRIETÁRIOS DE IA</span><span class="dot">•</span>
+    <span>99,9% DE PRECISÃO</span><span class="dot">•</span>
+    <span>CLIENTES EM 3 CONTINENTES</span><span class="dot">•</span>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <img src="assets/logo-sanick.png" alt="Sanick Equipamentos de Precisão">
+      <span class="slogan">Conte com a Sanick</span>
+    </div>
+    <nav>
+      <a href="#intelicount">Intelicount</a>
+      <a href="#solucoes">Soluções</a>
+      <a href="#produtos">Produtos</a>
+      <a href="#institucional">Institucional</a>
+      <a href="#blog">Blog</a>
+      <a href="#contato" class="nav-cta">Fale com um especialista</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <img class="hero-bg hero-bg-active" src="assets/home-visual-01.jpg" alt="Operador utilizando sensor Sanick em linha de produção farmacêutica, contador digital marcando 4.650 cápsulas">
+  <img class="hero-bg" src="assets/home-visual-02.jpg" alt="Operadora utilizando sensor Sanick em linha de produção industrial">
+  <div class="hero-scrim"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow fade-in-up" style="animation-delay:.05s">Tecnologia industrial brasileira</p>
+    <h1 class="fade-in-up" style="animation-delay:.18s">99,9% de precisão.<br><span class="accent">20x menor custo.</span><br>0 paradas para recalibrar.</h1>
+    <p class="sub fade-in-up" style="animation-delay:.32s">20 anos de P&D e algoritmos proprietários de IA, validados em 6 segmentos industriais — do parafuso à cápsula farmacêutica.</p>
+    <div class="cta-row fade-in-up" style="animation-delay:.46s">
+      <a href="#contato" class="btn-primary">Fale com um especialista</a>
+      <a href="#intelicount" class="btn-secondary">Conheça o Intelicount</a>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="num mono" data-target="99.9" data-suffix="%" data-decimals="1">0%</div><div class="label">precisão validada</div></div>
+    <div class="stat"><div class="num mono" data-target="20" data-suffix="x" data-decimals="0">0x</div><div class="label">menor custo</div></div>
+    <div class="stat"><div class="num mono" data-target="6" data-suffix="" data-decimals="0">0</div><div class="label">segmentos validados</div></div>
+  </div>
+</div>
+
+<section class="reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Por que Sanick</p>
+    <h2 class="section-title">Quatro coisas que nenhum concorrente entrega ao mesmo tempo</h2>
+    <p class="section-sub">Grandes players têm tecnologia. Concorrentes baratos, nem sempre. A Sanick combina os quatro.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>20x mais barato</h3>
+        <p>R$ 2.400 contra R$ 50.000 das alternativas — mesma classe técnica, fração do investimento.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg></div>
+        <h3>Nunca para pra recalibrar</h3>
+        <p>Calibração adaptativa automática. O sensor se ajusta sozinho — sua produção não para.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/></svg></div>
+        <h3>99,9% de precisão</h3>
+        <p>Validado em 19 unidades operacionais, 6 segmentos industriais, 3 continentes.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>Atendimento humanizado</h3>
+        <p>Suporte técnico direto, com retorno em até 24 horas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="solutions reveal" id="solucoes">
+  <div class="wrap">
+    <p class="section-eyebrow">Soluções por segmento</p>
+    <h2 class="section-title">Encontre sua solução.</h2>
+    <p class="section-sub">Seja qual for a peça pequena, o Intelicount já tem um jeito de contar.</p>
+
+    <div class="solutions-grid">
+      <div class="solution-card" style="background-image:url('assets/home-visual-03.jpg')">
+        <div class="solution-overlay">
+          <h3>Agronegócio</h3>
+          <p class="solution-examples">sementes e grãos</p>
+          <a class="solution-btn" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Trabalho%20com%20agroneg%C3%B3cio%20e%20gostaria%20de%20saber%20como%20o%20Intelicount%20pode%20ajudar%20na%20contagem%20de%20sementes%20e%20gr%C3%A3os." target="_blank" rel="noopener">Essa é a minha solução <span aria-hidden="true">&#8594;</span></a>
+        </div>
+      </div>
+
+      <div class="solution-card" style="background-image:url('assets/home-visual-04.jpg')">
+        <div class="solution-overlay">
+          <h3>Fabricação de bicicletas</h3>
+          <p class="solution-examples">correntes, engrenagens e pequenos componentes</p>
+          <a class="solution-btn" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Trabalho%20com%20fabrica%C3%A7%C3%A3o%20de%20bicicletas%20e%20gostaria%20de%20saber%20como%20o%20Intelicount%20pode%20ajudar%20na%20contagem%20de%20pe%C3%A7as%20e%20componentes." target="_blank" rel="noopener">Essa é a minha solução <span aria-hidden="true">&#8594;</span></a>
+        </div>
+      </div>
+
+      <div class="solution-card" style="background-image:url('assets/home-visual-05.jpg')">
+        <div class="solution-overlay">
+          <h3>Distribuição de ferragens</h3>
+          <p class="solution-examples">porcas, parafusos e fixadores</p>
+          <a class="solution-btn" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Trabalho%20com%20distribui%C3%A7%C3%A3o%20de%20ferragens%20e%20gostaria%20de%20saber%20como%20o%20Intelicount%20pode%20ajudar%20na%20contagem%20de%20parafusos%20e%20fixadores." target="_blank" rel="noopener">Essa é a minha solução <span aria-hidden="true">&#8594;</span></a>
+        </div>
+      </div>
+
+      <div class="solution-card" style="background-image:url('assets/home-visual-06.jpg')">
+        <div class="solution-overlay">
+          <h3>Próteses dentárias</h3>
+          <p class="solution-examples">implantes e peças pequenas</p>
+          <a class="solution-btn" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Trabalho%20com%20pr%C3%B3teses%20dent%C3%A1rias%20e%20gostaria%20de%20saber%20como%20o%20Intelicount%20pode%20ajudar%20na%20contagem%20de%20pe%C3%A7as%20odontol%C3%B3gicas." target="_blank" rel="noopener">Essa é a minha solução <span aria-hidden="true">&#8594;</span></a>
+        </div>
+      </div>
+
+      <div class="solution-card" style="background-image:url('assets/home-visual-07.jpg')">
+        <div class="solution-overlay">
+          <h3>Pedras preciosas</h3>
+          <p class="solution-examples">gemas, pedras e joias</p>
+          <a class="solution-btn" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Trabalho%20com%20pedras%20preciosas%20e%20gostaria%20de%20saber%20como%20o%20Intelicount%20pode%20ajudar%20na%20contagem%20de%20gemas%20e%20pequenas%20pe%C3%A7as." target="_blank" rel="noopener">Essa é a minha solução <span aria-hidden="true">&#8594;</span></a>
+        </div>
+      </div>
+
+      <div class="solution-card" style="background-image:url('assets/home-visual-08.jpg')">
+        <div class="solution-overlay">
+          <h3>Universidades</h3>
+          <p class="solution-examples">pesquisa, ensino e laboratório</p>
+          <a class="solution-btn" href="https://wa.me/5549999224604?text=Ol%C3%A1%21%20Somos%20uma%20universidade%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20Intelicount%20para%20aplica%C3%A7%C3%B5es%20acad%C3%AAmicas%20e%20de%20pesquisa." target="_blank" rel="noopener">Essa é a minha solução <span aria-hidden="true">&#8594;</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="teaser reveal" id="intelicount">
+  <div class="wrap">
+    <div class="teaser-card">
+      <div class="teaser-media">
+        <img src="assets/home-visual-09.jpg" alt="Sensor Sanick Intelicount contando peças em tempo real, display mostrando 246">
+      </div>
+      <div class="teaser-content">
+        <p class="teaser-eyebrow">Produto flagship</p>
+        <h3>Sanick Intelicount</h3>
+        <p>Contagem inteligente com garantia. IA proprietária, calibração adaptativa e conectividade 4.0 nativa — sem parar sua linha.</p>
+        <div class="teaser-specs">
+          <div><div class="n mono">99,9%</div><div class="l">precisão</div></div>
+          <div><div class="n mono">20x</div><div class="l">menor custo</div></div>
+          <div><div class="n mono">4.0</div><div class="l">conectividade</div></div>
+        </div>
+        <a href="intelicount.html" class="teaser-link">Conheça o Intelicount →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proof">
+  <div class="wrap">
+    <p class="proof-label">Já confiam na Sanick</p>
+    <div class="proof-logos">
+      <img src="assets/home-visual-10.png" alt="Bayer">
+      <img src="assets/home-visual-11.png" alt="BASF">
+      <img src="assets/home-visual-12.png" alt="Neodent">
+      <span class="proof-more">+60 empresas parceiras</span>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta reveal" id="contato">
+  <div class="wrap">
+    <p class="section-eyebrow">Conte com a Sanick</p>
+    <h2>Quanto sua produção perde por contagem imprecisa?</h2>
+    <p class="sub">Responda 5 perguntas rápidas e fale com um especialista sobre o seu caso.</p>
+
+    <div class="quiz-card" id="quizCard"></div>
+
+    <a class="whatsapp-cta" href="https://wa.me/5549999224604?text=Ol%C3%A1!%20Vim%20do%20site%20da%20Sanick%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20Intelicount." target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.004c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2zm5.8 14.1c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.12.11-1.8-.11a16.4 16.4 0 0 1-1.65-.61c-2.9-1.25-4.8-4.17-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36l.55.01c.18.01.41-.07.64.49.24.58.81 2 .88 2.15.07.14.12.31.02.5-.1.2-.15.32-.3.49-.14.18-.3.4-.44.53-.14.14-.29.29-.13.57.17.29.75 1.24 1.61 2.01 1.11 1 2.04 1.31 2.33 1.46.29.14.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.66.78 1.94.93.29.14.48.21.55.33.07.12.07.68-.17 1.36z"/></svg>
+      Fale conosco no WhatsApp
+    </a>
+  </div>
+</section>
+
+<section class="founders reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Quem lidera</p>
+    <h2 class="section-title">A dualidade que resume o nosso jeito de trabalhar.</h2>
+    <p class="section-sub">Comercial e técnico. Ambição e precisão. Chão de fábrica e visão de futuro — a mesma combinação que define o produto está na origem da empresa.</p>
+
+    <div class="founders-media">
+      <img src="assets/fundadores-estudio.jpg" alt="Fabiano e Adriano, fundadores da Sanick Equipamentos de Precisão">
+    </div>
+
+    <div class="founders-grid">
+      <div class="founder-card">
+        <p class="name">Fabiano</p>
+        <p class="role">Direção comercial &amp; estratégia</p>
+        <p>Responsável pela visão de negócio e relacionamento com o mercado. Conduz a Sanick na leitura de novos segmentos e na construção da proximidade com o cliente que virou marca registrada da empresa.</p>
+      </div>
+      <div class="founder-card">
+        <p class="name">Adriano</p>
+        <p class="role">Direção técnica &amp; P&amp;D</p>
+        <p>À frente do desenvolvimento de produto e da engenharia aplicada. É dele a obsessão por precisão que fez da Sanick uma empresa capaz de validar 99,9% de exatidão em ambientes industriais severos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="brand-block reveal">
+  <img src="assets/logo-parede.jpg" alt="Identidade visual Sanick aplicada em ambiente corporativo">
+  <div class="scrim"></div>
+  <div class="brand-block-content">
+    <p class="section-eyebrow">Essência da marca</p>
+    <h2>Precisão que gera tranquilidade.</h2>
+    <p>Em quatro palavras, a nossa essência resume o racional — 99,9% de precisão — e o emocional: a tranquilidade de quem não precisa conferir porque pode confiar.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Sanick Equipamentos de Precisão — Chapecó/SC, Brasil · Conte com a Sanick.</div>
+</footer>
+
+<script>
+const steps = [
+  {
+    label: "Pergunta 1 de 5",
+    question: "O que sua empresa precisa contar?",
+    type: "choice",
+    options: ["Parafusos, porcas e fixadores", "Sementes e grãos", "Componentes eletrônicos", "Pequenas peças metálicas"]
+  },
+  {
+    label: "Pergunta 2 de 5",
+    question: "Qual o tamanho médio das peças?",
+    type: "choice",
+    options: ["Menos de 1mm", "Entre 1mm e 20mm", "Entre 20mm e 50mm", "Maiores que 50mm"]
+  },
+  {
+    label: "Pergunta 3 de 5",
+    question: "Qual tecnologia de contagem você usa hoje?",
+    type: "choice",
+    singleCol: true,
+    options: ["Contagem manual", "Contagem por peso", "Visão computacional"]
+  },
+  {
+    label: "Pergunta 4 de 5",
+    question: "Quanto você estima perder por contagem imprecisa?",
+    type: "text",
+    placeholder: "Ex: cerca de 3% por lote, ou \"não sei responder\""
+  },
+  {
+    label: "Pergunta 5 de 5",
+    question: "Qual seu volume médio de peças por mês?",
+    type: "choice",
+    singleCol: true,
+    options: ["Até 100 mil peças/mês", "Entre 100 mil e 1 milhão", "Acima de 1 milhão"]
+  },
+  {
+    label: "Últimos dados",
+    question: "Para onde enviamos seu diagnóstico?",
+    type: "contact"
+  }
+];
+
+let current = 0;
+const answers = {};
+const card = document.getElementById('quizCard');
+
+function renderProgress(){
+  let html = '<div class="quiz-progress">';
+  steps.forEach((s,i)=>{
+    let cls = i < current ? 'seg done' : (i === current ? 'seg current' : 'seg');
+    html += `<div class="${cls}"><i></i></div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function next(){
+  if(current < steps.length - 1){ current++; render(); }
+}
+function back(){
+  if(current > 0){ current--; render(); }
+}
+
+function selectOption(i, opt){
+  answers[i] = opt;
+  if(i === current){
+    setTimeout(()=>{ next(); }, 220);
+  }
+  render();
+}
+
+function render(){
+  if(current >= steps.length){
+    card.innerHTML = `
+      <div class="quiz-done">
+        <div class="check">&#10003;</div>
+        <h3>Diagnóstico recebido.</h3>
+        <p>Um especialista Sanick entra em contato em até 24 horas com sua análise personalizada.</p>
+      </div>`;
+    return;
+  }
+
+  const s = steps[current];
+  let inner = renderProgress();
+  inner += `<p class="quiz-step-label">${s.label}</p>`;
+  inner += `<p class="quiz-question">${s.question}</p>`;
+
+  if(s.type === 'choice'){
+    inner += `<div class="quiz-options ${s.singleCol ? 'single-col' : ''}">`;
+    s.options.forEach(opt=>{
+      const sel = answers[current] === opt ? 'selected' : '';
+      inner += `<button type="button" class="quiz-option ${sel}" onclick="selectOption(${current}, this.textContent)">${opt}</button>`;
+    });
+    inner += `</div>`;
+    inner += `<div class="quiz-nav">`;
+    inner += current > 0 ? `<span class="quiz-back" onclick="back()">&larr; Voltar</span>` : `<span></span>`;
+    inner += `</div>`;
+  } else if(s.type === 'text'){
+    const val = answers[current] || '';
+    inner += `<input type="text" class="quiz-input" placeholder="${s.placeholder}" value="${val}" oninput="answers[${current}]=this.value">`;
+    inner += `<div class="quiz-nav">`;
+    inner += current > 0 ? `<span class="quiz-back" onclick="back()">&larr; Voltar</span>` : `<span></span>`;
+    inner += `<button class="quiz-continue" onclick="next()">Continuar</button>`;
+    inner += `</div>`;
+  } else if(s.type === 'contact'){
+    inner += `<div class="quiz-contact-grid">
+      <input type="text" class="quiz-input" placeholder="Nome" style="grid-column:span 1;">
+      <input type="text" class="quiz-input" placeholder="Empresa" style="grid-column:span 1;">
+      <input type="email" class="quiz-input" placeholder="E-mail" style="grid-column:span 2;">
+      <input type="tel" class="quiz-input" placeholder="Telefone" style="grid-column:span 2;">
+    </div>`;
+    inner += `<div class="quiz-nav">`;
+    inner += `<span class="quiz-back" onclick="back()">&larr; Voltar</span>`;
+    inner += `<button class="quiz-continue" onclick="current++; render();">Receber diagnóstico</button>`;
+    inner += `</div>`;
+  }
+
+  card.innerHTML = inner;
+}
+
+render();
+
+// Animated counters (stats bar)
+function animateCounter(el){
+  const target = parseFloat(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const decimals = parseInt(el.dataset.decimals || '0');
+  const duration = 1400;
+  const start = performance.now();
+  function tick(now){
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = target * eased;
+    el.textContent = value.toFixed(decimals).replace('.', ',') + suffix;
+    if(progress < 1){ requestAnimationFrame(tick); }
+    else { el.textContent = target.toFixed(decimals).replace('.', ',') + suffix; }
+  }
+  requestAnimationFrame(tick);
+}
+
+const statObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.querySelectorAll('.num[data-target]').forEach(animateCounter);
+      statObserver.unobserve(entry.target);
+    }
+  });
+}, {threshold:0.4});
+const statsBarEl = document.querySelector('.stats-bar');
+if(statsBarEl){ statObserver.observe(statsBarEl); }
+
+// Scroll-reveal for sections
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, {threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+// Hero carousel (crossfade)
+const heroBgs = document.querySelectorAll('.hero-bg');
+let heroIndex = 0;
+if(heroBgs.length > 1){
+  setInterval(()=>{
+    heroBgs[heroIndex].classList.remove('hero-bg-active');
+    heroIndex = (heroIndex + 1) % heroBgs.length;
+    heroBgs[heroIndex].classList.add('hero-bg-active');
+  }, 5000);
+}
+
+</script>
+
+</body>
+</html>

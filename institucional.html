@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Institucional — Sanick | 20 anos de precisão</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --terracotta:#AC2715;
+    --terracotta-dark:#8A1F11;
+    --green-dark:#2F5643;
+    --green-darker:#1E3A2E;
+    --sage:#7F998F;
+    --green-accent-text:#8FCDA8;
+    --green-btn:#3F7A57;
+    --green-btn-dark:#2F5C41;
+    --surface:#D9DAD9;
+    --ink:#242422;
+    --gray-text:#5B6560;
+    --white:#FFFFFF;
+    --off-white:#FAFAF9;
+    --border:rgba(36,36,34,0.10);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+
+  @keyframes fadeInUp{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
+  .fade-in-up{ opacity:0; animation:fadeInUp .8s ease forwards; }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  body{
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--ink);
+    background:var(--off-white);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Inter', sans-serif;
+    font-weight:700;
+    letter-spacing:-0.02em;
+    color:var(--green-darker);
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+  button{font-family:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,250,249,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .header-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 32px; max-width:1180px; margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:14px;}
+  .brand img{height:52px; width:auto;}
+  .brand .slogan{
+    font-family:'Inter',sans-serif; font-size:12px; font-weight:500;
+    color:var(--gray-text); letter-spacing:0.02em; font-style:italic;
+    border-left:1px solid var(--border); padding-left:14px;
+  }
+  nav{display:flex; gap:32px; align-items:center;}
+  nav a{font-size:14px; font-weight:500; color:var(--green-darker); transition:color .15s;}
+  nav a:hover{color:var(--terracotta);}
+  nav a.active{color:var(--terracotta);}
+  nav a.back-link{
+    color:var(--gray-text); font-weight:600; padding-right:20px; border-right:1px solid var(--border);
+  }
+  nav a.back-link:hover{color:var(--green-darker);}
+  .nav-cta{
+    background:var(--terracotta); color:var(--white) !important;
+    padding:10px 20px; border-radius:6px; font-weight:600;
+  }
+  .nav-cta:hover{background:var(--terracotta-dark); color:var(--white) !important;}
+
+  /* ===== Hero institucional ===== */
+  .inst-hero{
+    background:var(--green-darker);
+    position:relative;
+    overflow:hidden;
+    padding:64px 0 0;
+  }
+  .inst-hero-grid{
+    display:grid; grid-template-columns:1fr 0.9fr; gap:56px; align-items:center;
+  }
+  .inst-hero-eyebrow{
+    font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--sage); margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .inst-hero-eyebrow::before{content:""; width:28px; height:2px; background:var(--sage); display:inline-block;}
+  .inst-hero h1{
+    font-size:42px; line-height:1.15; color:var(--white); margin-bottom:20px; max-width:560px;
+  }
+  .inst-hero h1 .accent{color:var(--green-accent-text);}
+  .inst-hero p.sub{
+    font-size:17px; color:rgba(255,255,255,0.75); max-width:460px; margin-bottom:28px;
+  }
+  .inst-hero-media{
+    position:relative; height:100%; min-height:420px;
+    border-radius:16px 16px 0 0; overflow:hidden;
+  }
+  .inst-hero-media img{width:100%; height:100%; object-fit:cover; object-position:top center;}
+  .inst-hero-media::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(30,58,46,0) 55%, rgba(30,58,46,0.55) 100%);
+  }
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--terracotta); color:var(--white); font-weight:700; font-size:15px;
+    padding:15px 28px; border-radius:6px; border:none; cursor:pointer;
+    transition:transform .15s, box-shadow .15s, background .15s;
+    display:inline-block;
+  }
+  .btn-primary:hover{background:var(--terracotta-dark); transform:translateY(-2px); box-shadow:0 8px 20px rgba(172,39,21,0.35);}
+  .btn-secondary{
+    color:var(--white); font-weight:600; font-size:15px; padding:15px 20px;
+    border:1px solid rgba(255,255,255,0.35); border-radius:6px;
+    transition:border-color .15s, background .15s;
+    display:inline-block;
+  }
+  .btn-secondary:hover{border-color:var(--white); background:rgba(255,255,255,0.10);}
+
+  /* ===== Stats bar ===== */
+  .stats-bar{ background:var(--green-darker); border-top:1px solid rgba(255,255,255,0.08); }
+  .stats-inner{
+    max-width:1180px; margin:0 auto; padding:0 32px;
+    display:grid; grid-template-columns:repeat(4,1fr);
+  }
+  .stat{ padding:30px 20px; text-align:center; border-right:1px solid rgba(255,255,255,0.08); }
+  .stat:last-child{border-right:none;}
+  .stat .num{font-family:'Inter',sans-serif; font-size:30px; font-weight:800; color:var(--white); font-variant-numeric:tabular-nums;}
+  .stat .label{font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px;}
+
+  section{padding:88px 0;}
+  .section-eyebrow{
+    font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--terracotta); margin-bottom:12px;
+  }
+  .section-title{font-size:30px; margin-bottom:14px; max-width:640px;}
+  .section-sub{font-size:16px; color:var(--gray-text); max-width:600px; margin-bottom:48px;}
+
+  /* ===== Manifesto ===== */
+  .manifesto{
+    background:var(--terracotta-dark);
+    color:var(--white);
+    position:relative;
+  }
+  .manifesto .wrap{max-width:880px; text-align:center;}
+  .manifesto .section-eyebrow{color:var(--green-accent-text);}
+  .manifesto blockquote{
+    font-family:'Inter', sans-serif; font-weight:700; letter-spacing:-0.01em;
+    font-size:32px; line-height:1.35; color:var(--white); margin-bottom:24px;
+  }
+  .manifesto p{font-size:16px; color:rgba(255,255,255,0.78); max-width:640px; margin:0 auto;}
+
+  /* ===== História timeline ===== */
+  .timeline{display:flex; flex-direction:column; gap:0;}
+  .timeline-item{
+    display:grid; grid-template-columns:120px 1fr; gap:32px;
+    padding:32px 0; border-top:1px solid var(--border);
+  }
+  .timeline-item:last-child{border-bottom:1px solid var(--border);}
+  .timeline-year{font-family:'JetBrains Mono', monospace; font-size:15px; font-weight:600; color:var(--terracotta); padding-top:2px;}
+  .timeline-content h3{font-size:19px; margin-bottom:10px;}
+  .timeline-content p{font-size:15px; color:var(--gray-text); max-width:680px;}
+
+  /* ===== Missão / Visão / Valores ===== */
+  .mvv-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;}
+  .mvv-card{
+    background:var(--white); border:1px solid var(--border); border-radius:14px;
+    padding:32px;
+  }
+  .mvv-card .tag{font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--sage); margin-bottom:12px;}
+  .mvv-card p{font-size:16px; color:var(--ink); line-height:1.55;}
+  .values-strip{
+    display:grid; grid-template-columns:repeat(5,1fr); gap:1px;
+    background:var(--border); border:1px solid var(--border); border-radius:14px; overflow:hidden;
+  }
+  .value-cell{background:var(--white); padding:24px 18px; text-align:center;}
+  .value-cell .n{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--terracotta); margin-bottom:10px;}
+  .value-cell .t{font-size:13.5px; font-weight:600; color:var(--green-darker); line-height:1.4;}
+
+  /* ===== Fundadores ===== */
+  .founders{background:var(--white);}
+  .founders-media{border-radius:16px; overflow:hidden; margin-bottom:40px;}
+  .founders-media img{width:100%; object-position:center 20%; max-height:480px; object-fit:cover;}
+  .founders-grid{display:grid; grid-template-columns:1fr 1fr; gap:40px;}
+  .founder-card .name{font-size:20px; color:var(--green-darker); margin-bottom:2px;}
+  .founder-card .role{font-size:13px; font-weight:600; color:var(--terracotta); text-transform:uppercase; letter-spacing:.05em; margin-bottom:14px;}
+  .founder-card p{font-size:15px; color:var(--gray-text); line-height:1.6;}
+
+  /* ===== Marca / logo section ===== */
+  .brand-block{
+    position:relative; min-height:380px; display:flex; align-items:center;
+    background:var(--green-darker); overflow:hidden;
+  }
+  .brand-block img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.9;}
+  .brand-block .scrim{position:absolute; inset:0; background:linear-gradient(90deg, rgba(30,58,46,0.92) 0%, rgba(30,58,46,0.55) 55%, rgba(30,58,46,0.15) 100%);}
+  .brand-block-content{position:relative; z-index:2; max-width:480px; padding:0 32px;}
+  .brand-block-content .section-eyebrow{color:var(--green-accent-text);}
+  .brand-block-content h2{color:var(--white); font-size:28px; margin-bottom:14px;}
+  .brand-block-content p{color:rgba(255,255,255,0.75); font-size:15px;}
+
+  /* ===== Presença ===== */
+  .presence-grid{display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;}
+  .presence-list{list-style:none;}
+  .presence-list li{
+    display:flex; gap:14px; padding:16px 0; border-top:1px solid var(--border); font-size:15px; color:var(--ink);
+  }
+  .presence-list li:last-child{border-bottom:1px solid var(--border);}
+  .presence-list .icon{color:var(--terracotta); font-weight:700; flex-shrink:0;}
+  .clients-note{
+    border:1px dashed var(--border); border-radius:12px; padding:24px; font-size:13.5px; color:var(--gray-text);
+    text-align:center; background:var(--off-white);
+  }
+
+  /* ===== CTA final ===== */
+  .final-cta{background:var(--green-darker); text-align:center;}
+  .final-cta .section-eyebrow{color:var(--green-accent-text);}
+  .final-cta h2{color:var(--white); font-size:28px; max-width:600px; margin:0 auto 16px;}
+  .final-cta p.sub{color:rgba(255,255,255,0.72); max-width:520px; margin:0 auto 32px;}
+
+  footer{
+    background:var(--green-darker); color:rgba(255,255,255,0.5); text-align:center;
+    padding:28px 0; font-size:13px; border-top:1px solid rgba(255,255,255,0.08);
+  }
+
+  @media (max-width: 860px){
+    .inst-hero-grid{grid-template-columns:1fr;}
+    .inst-hero-media{min-height:280px; order:-1;}
+    .stats-inner{grid-template-columns:repeat(2,1fr);}
+    .stat{border-right:none; border-bottom:1px solid rgba(255,255,255,0.08);}
+    .mvv-grid{grid-template-columns:1fr;}
+    .values-strip{grid-template-columns:repeat(2,1fr);}
+    .founders-grid{grid-template-columns:1fr;}
+    .presence-grid{grid-template-columns:1fr;}
+    .timeline-item{grid-template-columns:1fr; gap:8px;}
+    nav{gap:18px;}
+    nav a:not(.nav-cta){display:none;}
+    .manifesto blockquote{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <a href="index.html"><img src="assets/logo-sanick.png" alt="Sanick Equipamentos de Precisão"></a>
+      <span class="slogan">Conte com a Sanick</span>
+    </div>
+    <nav>
+      <a href="index.html" class="back-link">← Voltar ao site</a>
+      <a href="intelicount.html">Intelicount</a>
+      <a href="index.html#solucoes">Soluções</a>
+      <a href="index.html#produtos">Produtos</a>
+      <a href="institucional.html" class="active">Institucional</a>
+      <a href="index.html#blog">Blog</a>
+      <a href="index.html#contato" class="nav-cta">Fale com um especialista</a>
+    </nav>
+  </div>
+</header>
+
+<section class="inst-hero">
+  <div class="wrap inst-hero-grid">
+    <div style="padding-bottom:56px;">
+      <p class="inst-hero-eyebrow fade-in-up">Institucional</p>
+      <h1 class="fade-in-up" style="animation-delay:.1s">20 anos resolvendo a contagem industrial.<br><span class="accent">Agora com IA.</span></h1>
+      <p class="sub fade-in-up" style="animation-delay:.18s">Nascemos dentro de uma universidade em Chapecó/SC para resolver um problema que a indústria trata como inevitável: a contagem imprecisa. Duas décadas depois, somos uma empresa de tecnologia com clientes em 3 continentes.</p>
+    </div>
+    <div class="inst-hero-media">
+      <img src="assets/fundadores-escritorio.jpg" alt="Fundadores da Sanick no escritório da empresa em Chapecó/SC">
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="num" data-target="20" data-suffix=" anos">0</div><div class="label">de P&amp;D contínuo</div></div>
+    <div class="stat"><div class="num" data-target="60" data-suffix="+">0</div><div class="label">clientes atendidos</div></div>
+    <div class="stat"><div class="num" data-target="3" data-suffix="">0</div><div class="label">continentes</div></div>
+    <div class="stat"><div class="num" data-target="99.9" data-decimals="1" data-suffix="%">0</div><div class="label">de precisão validada</div></div>
+  </div>
+</div>
+
+<section class="manifesto reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">O que nos move</p>
+    <blockquote>"Toda peça contada é uma promessa cumprida."</blockquote>
+    <p>Uma contagem imprecisa significa peças a mais — desperdício — ou peças a menos — retrabalho. A Sanick nasceu em 2006 para resolver esse problema com ciência aplicada ao chão de fábrica, não com promessa de marketing. Não vendemos equipamentos. Vendemos a certeza de que cada peça foi contada corretamente.</p>
+  </div>
+</section>
+
+<section id="historia" class="reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Nossa história</p>
+    <h2 class="section-title">De uma incubadora universitária a uma empresa de tecnologia com presença global.</h2>
+    <p class="section-sub">Vinte anos de chão de fábrica, ciência aplicada e proximidade com o cliente — contados em três momentos.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">2006</div>
+        <div class="timeline-content">
+          <h3>A origem</h3>
+          <p>Fundada em agosto de 2006, dentro de uma incubadora universitária no oeste de Santa Catarina, a Sanick nasce da vontade de transformar conhecimento acadêmico em solução industrial real. Uma empresa de base tecnológica que aplica ciência, tecnologia e inovação ao problema mais caro e ignorado da produção: a contagem de pequenas peças.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2006–2025</div>
+        <div class="timeline-content">
+          <h3>Duas décadas de chão de fábrica</h3>
+          <p>Contadores eletrônicos, alimentadores vibratórios, envelopadoras — cada produto nasceu de uma necessidade real de um cliente real. Aprendemos que precisão não é teoria: é funcionar 24 horas por dia em ambientes com pó, vibração e temperatura extrema. Nesse período, construímos em silêncio uma base de mais de 60 clientes, incluindo algumas das maiores corporações do mundo.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2025–2026</div>
+        <div class="timeline-content">
+          <h3>O ponto de virada</h3>
+          <p>Do nosso portfólio, um produto chama atenção: o sensor Intelicount, com IA proprietária e calibração adaptativa automática. Validado em seis segmentos industriais — do agronegócio à odontologia — fica claro que a Sanick não é mais apenas uma fabricante de equipamentos: é uma empresa de tecnologia industrial com potencial global.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--white); border-top:1px solid var(--border); border-bottom:1px solid var(--border);" class="reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Propósito, missão e visão</p>
+    <h2 class="section-title">Onde a precisão encontra a confiança.</h2>
+
+    <div class="mvv-grid">
+      <div class="mvv-card">
+        <p class="tag">Missão</p>
+        <p>Desenvolver soluções de sensoriamento inteligente que combinam hardware robusto, algoritmos de IA proprietários e relacionamento humano para tornar a contagem industrial confiável, acessível e contínua.</p>
+      </div>
+      <div class="mvv-card">
+        <p class="tag">Visão</p>
+        <p>Ser referência global em sensores inteligentes de contagem para a Indústria 4.0 e 5.0 — a ponte entre a precisão brasileira e a transformação digital do chão de fábrica no mundo.</p>
+      </div>
+    </div>
+
+    <div class="values-strip">
+      <div class="value-cell"><div class="n">01</div><div class="t">Precisão como promessa</div></div>
+      <div class="value-cell"><div class="n">02</div><div class="t">Resiliência sem desculpas</div></div>
+      <div class="value-cell"><div class="n">03</div><div class="t">Tecnologia com propósito</div></div>
+      <div class="value-cell"><div class="n">04</div><div class="t">Proximidade que gera confiança</div></div>
+      <div class="value-cell"><div class="n">05</div><div class="t">Evolução contínua com raízes</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="founders reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Quem lidera</p>
+    <h2 class="section-title">A dualidade que resume o nosso jeito de trabalhar.</h2>
+    <p class="section-sub">Comercial e técnico. Ambição e precisão. Chão de fábrica e visão de futuro — a mesma combinação que define o produto está na origem da empresa.</p>
+
+    <div class="founders-media">
+      <img src="assets/fundadores-estudio.jpg" alt="Fabiano e Adriano, fundadores da Sanick Equipamentos de Precisão">
+    </div>
+
+    <div class="founders-grid">
+      <div class="founder-card">
+        <p class="name">Fabiano</p>
+        <p class="role">Direção comercial &amp; estratégia</p>
+        <p>Responsável pela visão de negócio e relacionamento com o mercado. Conduz a Sanick na leitura de novos segmentos e na construção da proximidade com o cliente que virou marca registrada da empresa.</p>
+      </div>
+      <div class="founder-card">
+        <p class="name">Adriano</p>
+        <p class="role">Direção técnica &amp; P&amp;D</p>
+        <p>À frente do desenvolvimento de produto e da engenharia aplicada. É dele a obsessão por precisão que fez da Sanick uma empresa capaz de validar 99,9% de exatidão em ambientes industriais severos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="brand-block reveal">
+  <img src="assets/logo-parede.jpg" alt="Identidade visual Sanick aplicada em ambiente corporativo">
+  <div class="scrim"></div>
+  <div class="brand-block-content">
+    <p class="section-eyebrow">Essência da marca</p>
+    <h2>Precisão que gera tranquilidade.</h2>
+    <p>Em quatro palavras, a nossa essência resume o racional — 99,9% de precisão — e o emocional: a tranquilidade de quem não precisa conferir porque pode confiar.</p>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="wrap presence-grid">
+    <div>
+      <p class="section-eyebrow">Presença</p>
+      <h2 class="section-title">Raízes em Chapecó. Operação em três continentes.</h2>
+      <p class="section-sub">Somos uma empresa brasileira de tecnologia industrial — e isso é um ativo, não uma limitação.</p>
+      <ul class="presence-list">
+        <li><span class="icon">→</span> Matriz e operação em Chapecó/SC, Brasil</li>
+        <li><span class="icon">→</span> Clientes ativos no Brasil, Argentina, Paraguai e Europa</li>
+        <li><span class="icon">→</span> Mais de 60 clientes atendidos, incluindo multinacionais</li>
+        <li><span class="icon">→</span> Validação em 6 segmentos industriais distintos</li>
+      </ul>
+    </div>
+    <div class="clients-note">
+      Espaço reservado para o mural de clientes e parceiros.<br>Aguardando definição de quais logos incluir nesta página.
+    </div>
+  </div>
+</section>
+
+<section class="final-cta reveal">
+  <div class="wrap">
+    <p class="section-eyebrow">Conte com a Sanick</p>
+    <h2>Quer conhecer de perto como trabalhamos?</h2>
+    <p class="sub">Fale com o nosso time e entenda como duas décadas de P&amp;D podem resolver o problema de contagem da sua produção.</p>
+    <a class="btn-primary" href="index.html#contato">Fale com um especialista</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Sanick Equipamentos de Precisão — Chapecó/SC, Brasil · Conte com a Sanick.</div>
+</footer>
+
+<script>
+function animateCounter(el){
+  const target = parseFloat(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const decimals = parseInt(el.dataset.decimals || '0');
+  const duration = 1400;
+  const start = performance.now();
+  function tick(now){
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = target * eased;
+    el.textContent = value.toFixed(decimals).replace('.', ',') + suffix;
+    if(progress < 1){ requestAnimationFrame(tick); }
+    else { el.textContent = target.toFixed(decimals).replace('.', ',') + suffix; }
+  }
+  requestAnimationFrame(tick);
+}
+const statObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.querySelectorAll('.num[data-target]').forEach(animateCounter);
+      statObserver.unobserve(entry.target);
+    }
+  });
+}, {threshold:0.4});
+const statsBarEl = document.querySelector('.stats-bar');
+if(statsBarEl){ statObserver.observe(statsBarEl); }
+
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, {threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+</script>
+
+</body>
+</html>
